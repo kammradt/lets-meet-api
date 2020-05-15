@@ -4,7 +4,7 @@
   },
   "db": {
     "type": "postgres",
-    "port": 5432,
+    "port": 1111,
     "database": "letsmeet"
   },
   "jwt": {
