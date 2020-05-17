@@ -5,6 +5,8 @@ import { UserRole } from './enum/user-role.enum';
 import {
   ConflictException,
   InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { LoginRequest } from './dto/login-request';
 import * as bcrypt from 'bcryptjs';
@@ -30,6 +32,26 @@ export class UserRepository extends Repository<User> {
       } else {
         throw new InternalServerErrorException();
       }
+    }
+  }
+
+  async validateLogin(loginRequest: LoginRequest): Promise<string> {
+    const { email, password } = loginRequest;
+    const user = await this.findByEmail(email);
+
+    if (!await user.hasCorrectPassword(password)) {
+      throw new UnauthorizedException();
+    }
+
+    return user.email;
+  }
+
+  public async findByEmail(email: string) {
+    const user = await this.findOne({ email });
+
+    if (!user) {
+      throw new NotFoundException();
+    }
 
     return user;
   }
