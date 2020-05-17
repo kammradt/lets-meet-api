@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserRepository } from './user.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RegisterRequest } from './dto/register-request';
-import { User } from './user.entity';
+import { LoginRequest } from './dto/login-request';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +11,7 @@ export class AuthService {
     private userRepository: UserRepository) {
   }
 
-  async register(registerRequest: RegisterRequest): Promise<User> {
+  public async register(registerRequest: RegisterRequest): Promise<void> {
     return this.userRepository.register(registerRequest);
   }
 }
