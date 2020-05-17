@@ -21,9 +21,8 @@ Some time ago, I was interested on Typescript and building APIs with it, so I st
 
 ## Description 📝  
 
-**Let's meet!** is a study project aiming to be a simpler version of [Meetup](https://www.meetup.com/).
-{{ add_description_text }}
-
+**Let's meet!** is a study project aiming to be a simpler version of [Meetup](https://www.meetup.com/).  
+It will allow users to create, manage and organize events, with some interaction between users while the event don't start :stuck_out_tongue_winking_eye:. 
 
 ## How to use :globe_with_meridians:  
 
