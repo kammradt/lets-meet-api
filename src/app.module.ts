@@ -6,7 +6,7 @@ import { UserModule } from './users/user.module';
 @Module({
   imports: [
     TypeOrmCoreModule.forRoot(typeORMConfig),
-    UserModule
+    UserModule,
   ],
 })
 export class AppModule {
