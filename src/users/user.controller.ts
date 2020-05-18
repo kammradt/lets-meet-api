@@ -1,23 +1,23 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { UserService } from './user.service';
 import { RegisterRequest } from './dto/register-request';
 import { LoginRequest } from './dto/login-request';
 import { JwtResponse } from './dto/jwt-response';
 
 
-@Controller('auth')
-export class AuthController {
-  constructor(private authService: AuthService) {
+@Controller('users')
+export class UserController {
+  constructor(private userService: UserService) {
   }
 
   @Post('register')
   register(@Body() registerRequest: RegisterRequest): Promise<void> {
-    return this.authService.register(registerRequest);
+    return this.userService.register(registerRequest);
   }
 
   @Post('login')
   login(@Body() loginRequest: LoginRequest): Promise<JwtResponse> {
-    return this.authService.login(loginRequest);
+    return this.userService.login(loginRequest);
   }
 
 }

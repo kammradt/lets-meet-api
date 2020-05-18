@@ -24,6 +24,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   // Run after decoding the JWT into a JwtPayload.
   // We implement the way we want to validate, and what is returned is injected into our request
   async validate(payload: JwtPayload): Promise<User> {
-    return await this.userRepository.findByEmail(payload.username);
+    return await this.userRepository.findByEmail(payload.email);
   }
 }

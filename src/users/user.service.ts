@@ -8,7 +8,7 @@ import { JwtResponse } from './dto/jwt-response';
 import { JwtPayload } from './dto/jwt-payload';
 
 @Injectable()
-export class AuthService {
+export class UserService {
   constructor(
     @InjectRepository(UserRepository)
     private userRepository: UserRepository,
@@ -20,8 +20,8 @@ export class AuthService {
   }
 
   public async login(loginRequest: LoginRequest): Promise<JwtResponse> {
-    const username: string = await this.userRepository.validateLogin(loginRequest);
-    const payload: JwtPayload = { username };
+    const email: string = await this.userRepository.validateLogin(loginRequest);
+    const payload: JwtPayload = { email };
     const token: string = await this.jwtService.sign(payload);
     return { token };
   }
