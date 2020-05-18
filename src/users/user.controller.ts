@@ -1,30 +1,22 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RegisterRequest } from './dto/register-request';
-import { LoginRequest } from './dto/login-request';
-import { JwtResponse } from './dto/jwt-response';
+import { RegisterRequest } from './dtos/register-request';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
-import { GetUser } from './decorator/get-user.decorator';
-
+import { GetUser } from '../auth/get-user.decorator';
 
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {
   }
 
-  @Post('register')
+  @Post()
   register(@Body() registerRequest: RegisterRequest): Promise<void> {
     return this.userService.register(registerRequest);
   }
 
-  @Post('login')
-  login(@Body() loginRequest: LoginRequest): Promise<JwtResponse> {
-    return this.userService.login(loginRequest);
-  }
-
   @UseGuards(AuthGuard())
-  @Get('me')
+  @Get()
   me(@GetUser() user: User): User {
     return user;
   }

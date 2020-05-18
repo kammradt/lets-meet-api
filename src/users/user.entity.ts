@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { UserRole } from './enum/user-role.enum';
+import { UserRole } from './user-role.enum';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 
