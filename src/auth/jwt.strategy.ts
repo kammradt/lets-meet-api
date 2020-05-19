@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { User } from '../users/user.entity';
-import * as config from 'config';
 import { JwtPayload } from './dtos/jwt-payload';
 import { UserService } from '../users/user.service';
+import * as config from 'config';
 
 const { secret } = config.get('jwt');
 
