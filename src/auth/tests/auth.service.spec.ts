@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../../users/user.entity';
 import { JwtResponse } from '../dtos/jwt-response';
 import { UnauthorizedException } from '@nestjs/common';
-import mock = jest.mock;
 
 
 const mockUserService = () => ({
@@ -57,17 +56,20 @@ describe('AuthService', () => {
 
       userService.findByEmail.mockResolvedValue(user);
       user.hasCorrectPassword.mockResolvedValue(true);
-      jwtService.sign.mockResolvedValue('123token123')
+      jwtService.sign.mockResolvedValue('123token123');
 
-      const jwtResponse: JwtResponse = await authService.login(mockLoginRequest)
-      expect(jwtResponse.token).toBe('123token123')
+      const jwtResponse: JwtResponse = await authService.login(mockLoginRequest);
+      expect(jwtResponse.token).toBe('123token123');
+      expect(userService.findByEmail).toHaveBeenCalledWith(mockLoginRequest.email);
+      expect(user.hasCorrectPassword).toHaveBeenCalledWith(mockLoginRequest.password);
+      expect(jwtService.sign).toHaveBeenCalledWith({ email: mockLoginRequest.email });
     });
 
     it('should throw an UnauthorizedException', () => {
       userService.findByEmail.mockResolvedValue(user);
       user.hasCorrectPassword.mockResolvedValue(false);
 
-      expect(authService.login(mockLoginRequest)).rejects.toThrow(UnauthorizedException)
+      expect(authService.login(mockLoginRequest)).rejects.toThrow(UnauthorizedException);
     });
   });
 });
