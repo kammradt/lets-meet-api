@@ -1,7 +1,7 @@
 
 
 
-<h1 align="center">Welcome to Termigol 💻</h1>
+<h1 align="center">Welcome to Let's Meet :v: </h1>
 
 <div align="center">
     <img  src="./images/lets-meet.png"  alt="Let's meet logo"  width=500">
