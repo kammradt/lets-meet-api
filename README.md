@@ -77,9 +77,9 @@ You can verify more below!
 
 ##  How to use :globe_with_meridians:
 
-  Link to API : < not ready yet >  
-  Link to client : < not ready yet >
-  
+Link to API : < not ready yet >  
+Link to client : < not ready yet >
+
 ##  How to use :house:
 
 Database:
