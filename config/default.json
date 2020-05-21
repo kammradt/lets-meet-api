@@ -3,9 +3,13 @@
     "port": 3000
   },
   "db": {
+    "host": "localhost",
+    "database": "letsmeet",
+    "username": "postgres",
+    "password": "postgres",
+    "synchronize": true,
     "type": "postgres",
-    "port": 1111,
-    "database": "letsmeet"
+    "port": 5432
   },
   "jwt": {
     "expiresIn": 3600
