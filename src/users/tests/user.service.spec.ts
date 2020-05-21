@@ -5,14 +5,13 @@ import * as bcrypt from 'bcryptjs';
 import { RegisterRequest } from '../dtos/register-request';
 import { UserRole } from '../user-role.enum';
 import { User } from '../user.entity';
-import { NotFoundException } from '@nestjs/common';
 
 let mockUserRepository = () => ({
   persist: jest.fn(),
   findByEmail: jest.fn(),
 });
 
-describe('AuthService', () => {
+describe('UserService', () => {
   let userService;
   let userRepository;
 
