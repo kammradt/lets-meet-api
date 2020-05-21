@@ -11,7 +11,7 @@ export class UserController {
   }
 
   @Post()
-  register(@Body() registerRequest: RegisterRequest): Promise<void> {
+  register(@Body() registerRequest: RegisterRequest): Promise<User> {
     return this.userService.register(registerRequest);
   }
 
