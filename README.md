@@ -78,8 +78,8 @@ You can verify more below!
 
 ##  How to use :globe_with_meridians:
 
-  Link to API : Not deployed yet
-  Link to client : (Will be done in Vue.js)
+Link to API : Not deployed yet  
+Link to client : (Will be done in Vue.js)
 
 ##  How to use :house:
 
