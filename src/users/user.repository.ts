@@ -6,9 +6,9 @@ import { ConflictException, InternalServerErrorException, NotFoundException } fr
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
-  public async persist(user: User): Promise<void> {
+  public async persist(user: User): Promise<User> {
     try {
-      await user.save();
+      return await user.save();
     } catch (e) {
       if (e.code === '23505') { // TODO create a ExceptionGuard
         throw new ConflictException('Username not available');

@@ -13,7 +13,7 @@ export class UserService {
     private userRepository: UserRepository) {
   }
 
-  public async register(registerRequest: RegisterRequest): Promise<void> {
+  public async register(registerRequest: RegisterRequest): Promise<User> {
     const { email, password } = registerRequest;
 
     const user = new User();
