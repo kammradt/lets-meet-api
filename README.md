@@ -45,6 +45,8 @@ You can verify more below!
 
 ###  Development progress :bar_chart:
 
+> I'm trying to follow gitflow, so you can see my progress usings the tags from this repository too! :blush:
+
 
 - [ ] **Users module**
 	- [x] Anyone should be able to register and become a User
@@ -76,8 +78,8 @@ You can verify more below!
 
 ##  How to use :globe_with_meridians:
 
-  Link to API : < not ready yet >
-  Link to client : < not ready yet >
+  Link to API : Not deployed yet
+  Link to client : (Will be done in Vue.js)
 
 ##  How to use :house:
 
@@ -87,11 +89,12 @@ Database:
 API Dev:
 `npm run start:dev`
 
-API Build
+API Build:
 `npm run build`
 
-API tests
+API tests:
 `npm run test`
+
 
 ##  Author
 
