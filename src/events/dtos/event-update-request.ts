@@ -1,4 +1,5 @@
-import { IsDateString, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import { IsDateString, IsEnum, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import { EventStatus } from '../event-status.enum';
 
 export class EventUpdateRequest {
 
@@ -24,6 +25,10 @@ export class EventUpdateRequest {
   @IsNumber()
   @Min(1)
   maxAttendees: number;
+
+  @IsOptional()
+  @IsEnum(EventStatus)
+  status: EventStatus
 
 }
 
