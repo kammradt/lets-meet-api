@@ -8,6 +8,7 @@ import { GetUser } from '../auth/get-user.decorator';
 import { EventRequest } from './dtos/event-request';
 import { EventService } from './event.service';
 import { Event } from './event.entity';
+import { EventUpdateRequest } from './dtos/event-update-request';
 
 @UseGuards(AuthGuard(), RolesGuard)
 @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
@@ -27,10 +28,10 @@ export class EventController {
   @Patch(':id')
   update(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() eventRequest: EventRequest,
+    @Body() eventUpdateRequest: EventUpdateRequest,
     @GetUser() user: User,
   ): Promise<Event> {
-    return this.eventService.update(id, eventRequest, user);
+    return this.eventService.update(id, eventUpdateRequest, user);
   }
 
   @Get()

@@ -7,6 +7,7 @@ import { EventStatus } from './event-status.enum';
 import { UserRole } from '../users/user-role.enum';
 import { EventRepository } from './event.repository';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EventUpdateRequest } from './dtos/event-update-request';
 
 @Injectable()
 export class EventService {
@@ -44,14 +45,14 @@ export class EventService {
     return event;
   }
 
-  public async update(id: string, eventRequest: EventRequest, user: User): Promise<Event> {
+  public async update(id: string, eventUpdateRequest: EventUpdateRequest, user: User): Promise<Event> {
     const event = await this.findById(id, user);
 
     this.validate(event, user);
 
     return await this.eventRepository.save({
       ...event,
-      ...eventRequest,
+      ...eventUpdateRequest,
     });
   }
 
