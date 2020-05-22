@@ -63,7 +63,7 @@ You can verify more below!
 	- [x] Regular Users should be able to create events with 50 max attendees
 		- [x] 100 attendees for Premium Users
 	- [x] Users should be able to edit the Event title, description, date, etc.
-	- [ ] Users should be able to cancel their Events
+	- [x] Users should be able to cancel their Events
 		- [ ] Admins should be able to cancel any Event
 	- [ ] Events should be able to hold Users requesting to attend
 	- [ ] Events should be able to hold Users requesting to exit from it
