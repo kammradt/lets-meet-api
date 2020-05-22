@@ -26,8 +26,9 @@ export class EventService {
   }
 
   private validateNumberOfAttendees(event: Event, user: User) {
-    if (event.maxAttendees > this.getMaxNumberOfAttendeesByRole(user.role)) {
-      throw new UnauthorizedException('Regular users can only create events with up to 50 attendees');
+    const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role)
+    if (event.maxAttendees > maxAttendees) {
+      throw new UnauthorizedException(`Users that are ${user.role} can only create events with up to ${maxAttendees} attendees`);
       // TODO create custom exception
     }
   }
