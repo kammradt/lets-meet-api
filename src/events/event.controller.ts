@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
 import { RequiredRoles } from '../auth/required-roles.decorator';
@@ -24,8 +24,17 @@ export class EventController {
     return this.eventService.create(eventRequest, user);
   }
 
+  @Patch(':id')
+  update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() eventRequest: EventRequest,
+    @GetUser() user: User,
+  ): Promise<Event> {
+    return this.eventService.update(id, eventRequest, user);
+  }
+
   @Get()
-  getManagedEvents(@GetUser() user: User) {
-    return this.eventService.getManagedEvents(user);
+  findManagedEvents(@GetUser() user: User) {
+    return this.eventService.findManagedEvents(user);
   }
 }
