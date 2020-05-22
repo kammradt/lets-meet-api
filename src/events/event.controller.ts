@@ -10,7 +10,7 @@ import { EventService } from './event.service';
 import { Event } from './event.entity';
 
 @UseGuards(AuthGuard(), RolesGuard)
-@RequiredRoles(UserRole.REGULAR)
+@RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
 @Controller('events')
 export class EventController {
   constructor(private eventService: EventService) {
@@ -24,4 +24,8 @@ export class EventController {
     return this.eventService.create(eventRequest, user);
   }
 
+  @Get()
+  getManagedEvents(@GetUser() user: User) {
+    return this.eventService.getManagedEvents(user);
+  }
 }
