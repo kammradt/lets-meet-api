@@ -14,9 +14,9 @@ export class EventService {
   public async create(eventRequest: EventRequest, user: User): Promise<Event> {
     const event = plainToClass(Event, eventRequest);
     event.owner = user;
-    event.status = EventStatus.OPEN
+    event.status = EventStatus.OPEN;
 
-    this.validate(event, user)
+    this.validate(event, user);
 
     return await event.save();
   }
@@ -26,10 +26,17 @@ export class EventService {
   }
 
   private validateNumberOfAttendees(event: Event, user: User) {
-    if (event.maxAttendees > 50 && user.role == UserRole.REGULAR) {
+    if (event.maxAttendees > this.getMaxNumberOfAttendeesByRole(user.role)) {
       throw new UnauthorizedException('Regular users can only create events with up to 50 attendees');
       // TODO create custom exception
     }
+  }
+
+  private getMaxNumberOfAttendeesByRole(userRole: UserRole): number {
+    const maxAttendeesRule = {};
+    maxAttendeesRule[UserRole.REGULAR] = 50;
+    maxAttendeesRule[UserRole.ADMIN] = 100;
+    return maxAttendeesRule[userRole]
   }
 
   public async getManagedEvents(user: User) {
