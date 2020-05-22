@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Event } from './tests/event.entity';
+import { Event } from './event.entity';
 
 
 @EntityRepository(Event)

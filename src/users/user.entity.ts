@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserRole } from './user-role.enum';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
+import { Event } from '../events/event.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
@@ -22,6 +23,10 @@ export class User extends BaseEntity {
   @Exclude()
   @Column()
   salt: string;
+
+  @Exclude()
+  @OneToMany(type => Event, event => event.owner, { eager: true })
+  events: Event[];
 
   async hasCorrectPassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
