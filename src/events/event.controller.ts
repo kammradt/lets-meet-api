@@ -38,4 +38,13 @@ export class EventController {
   findManagedEvents(@GetUser() user: User) {
     return this.eventService.findManagedEvents(user);
   }
+
+  @Get(':id')
+  findManagedEvent(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User
+  ) {
+    return this.eventService.findById(id, user);
+  }
+
 }
