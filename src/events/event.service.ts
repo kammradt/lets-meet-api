@@ -32,4 +32,9 @@ export class EventService {
     }
   }
 
+  public async getManagedEvents(user: User) {
+    return Event.find({
+      owner: user,
+    });
+  }
 }
