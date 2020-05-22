@@ -35,15 +35,15 @@ export class EventController {
   }
 
   @Get()
-  findManagedEvents(@GetUser() user: User) {
+  findManagedEvents(@GetUser() user: User): Promise<Event[]> {
     return this.eventService.findManagedEvents(user);
   }
 
   @Get(':id')
   findManagedEvent(
     @Param('id', ParseUUIDPipe) id: string,
-    @GetUser() user: User
-  ) {
+    @GetUser() user: User,
+  ): Promise<Event> {
     return this.eventService.findById(id, user);
   }
 

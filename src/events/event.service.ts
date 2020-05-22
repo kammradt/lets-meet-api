@@ -27,13 +27,13 @@ export class EventService {
     return await event.save();
   }
 
-  public async findManagedEvents(user: User) {
+  public async findManagedEvents(user: User): Promise<Event[]> {
     return Event.find({
       owner: user,
     });
   }
 
-  public async findById(id: string, user: User) {
+  public async findById(id: string, user: User): Promise<Event> {
     const event = await Event.findOne({
       id, owner: user,
     });
@@ -56,11 +56,11 @@ export class EventService {
     });
   }
 
-  private validate(event: Event, user: User) {
+  private validate(event: Event, user: User): void {
     this.validateNumberOfAttendees(event, user);
   }
 
-  private validateNumberOfAttendees(event: Event, user: User) {
+  private validateNumberOfAttendees(event: Event, user: User): void {
     const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role);
     if (event.maxAttendees > maxAttendees) {
       throw new UnauthorizedException(`Users that are ${user.role} can only create events with up to ${maxAttendees} attendees`);
