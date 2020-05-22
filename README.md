@@ -1,7 +1,7 @@
 
 
 
-<h1 align="center">Welcome to Let's Meet :v: </h1>
+<h1 align="center">Welcome to Let's Meet API :v: </h1>
 
 <div align="center">
     <img  src="./images/lets-meet.png"  alt="Let's meet logo"  width=500">
@@ -19,9 +19,9 @@
 
 <div align="center">
 
-<a  href="https://github.com/kammradt/lets-meet/stargazers">
+<a  href="https://github.com/kammradt/lets-meet-api/stargazers">
 
-<img  src="https://img.shields.io/github/stars/kammradt/lets-meet.svg?style=for-the-badge" />
+<img  src="https://img.shields.io/github/stars/kammradt/lets-meet-api.svg?style=for-the-badge" />
 
 </a>
 
@@ -78,8 +78,9 @@ You can verify more below!
 
 ##  How to use :globe_with_meridians:
 
-Link to API : Not deployed yet  
-Link to client : (Will be done in Vue.js)
+API: https://api-lets-meet.herokuapp.com/  
+Web app: https://lets-meet.now.sh/   
+[Web app repo](https://github.com/kammradt/lets-meet-client)
 
 ##  How to use :house:
 
@@ -94,6 +95,10 @@ API Build:
 
 API tests:
 `npm run test`
+
+Web app:
+`npm run serve`
+
 
 
 ##  Author
