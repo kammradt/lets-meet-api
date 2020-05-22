@@ -60,7 +60,7 @@ You can verify more below!
 	- [x] This module should export authorization and authentication functionality for all other modules
 
 - [ ] **Events module**
-	- [ ] Regular Users should be able to create events with 50 max attendees
+	- [x] Regular Users should be able to create events with 50 max attendees
 		- [ ] 100 attendees for Premium Users
 	- [ ] Users should be able to edit the Event title, description, date, etc.
 	- [ ] Users should be able to cancel their Events
@@ -78,8 +78,8 @@ You can verify more below!
 
 ##  How to use :globe_with_meridians:
 
-API: https://api-lets-meet.herokuapp.com/  
-Web app: https://lets-meet.now.sh/   
+API: https://api-lets-meet.herokuapp.com/
+Web app: https://lets-meet.now.sh/
 [Web app repo](https://github.com/kammradt/lets-meet-client)
 
 ##  How to use :house:
