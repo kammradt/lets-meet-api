@@ -41,7 +41,7 @@ export class EventController {
     @Param('id', ParseUUIDPipe) id: string,
     @GetUser() user: User,
   ): Promise<Event> {
-    return this.eventService.findById(id, user);
+    return this.eventService.findManagedEventById(id, user);
   }
 
 }
