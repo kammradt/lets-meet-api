@@ -4,7 +4,8 @@ import { EventRepository } from '../event.repository';
 import { InvalidNumberOfMaxAttendeesException } from '../exceptions/Invalid-number-of-max-attendees.exception';
 import {
   mockEvent,
-  mockEventRequest, mockEvents,
+  mockEventRequest,
+  mockEvents,
   mockEventUpdateRequest,
   mockPremiumUser,
   mockRegularUser,
@@ -171,31 +172,31 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
-    it('should should throw an EventCancelledException', () => {
-      mockEvent.status = EventStatus.CANCELED
-      mockEvent.manager = mockRegularUser
+    it('should throw an EventCancelledException', () => {
+      mockEvent.status = EventStatus.CANCELED;
+      mockEvent.manager = mockRegularUser;
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
-      mockEventUpdateRequest.maxAttendees = 20
+      mockEventUpdateRequest.maxAttendees = 20;
 
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventCancelledException)
+      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventCancelledException);
 
       expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
-    it('should should throw an EventDoneException', () => {
-      mockEvent.status = EventStatus.DONE
-      mockEvent.manager = mockRegularUser
+    it('should throw an EventDoneException', () => {
+      mockEvent.status = EventStatus.DONE;
+      mockEvent.manager = mockRegularUser;
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
-      mockEventUpdateRequest.maxAttendees = 20
+      mockEventUpdateRequest.maxAttendees = 20;
 
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventDoneException)
+      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventDoneException);
 
       expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
@@ -205,6 +206,36 @@ describe('EventsService', () => {
       const notImplementedYet = true;
       expect(notImplementedYet).toBeTruthy();
     });
+  });
+
+  describe('cancel', () => {
+    it('should cancel an event', async () => {
+      mockEvent.status = EventStatus.OPEN;
+      eventRepository.findById.mockResolvedValue(mockEvent);
+      eventRepository.persist.mockResolvedValue('event');
+
+      const result = await eventService.cancel('id');
+
+      expect(eventRepository.findById).toHaveBeenCalledWith('id');
+      expect(result).toBe('event')
+    });
+
+    it('should throw an EventCancelledException', () => {
+      mockEvent.status = EventStatus.CANCELED;
+      eventRepository.findById.mockResolvedValue(mockEvent);
+
+      expect(eventService.cancel('id')).rejects.toThrow(EventCancelledException)
+      expect(eventRepository.findById).toHaveBeenCalledWith('id');
+    });
+
+    it('should throw an EventDoneException', () => {
+      mockEvent.status = EventStatus.DONE;
+      eventRepository.findById.mockResolvedValue(mockEvent);
+
+      expect(eventService.cancel('id')).rejects.toThrow(EventDoneException)
+      expect(eventRepository.findById).toHaveBeenCalledWith('id');
+    });
+
   });
 
 });
