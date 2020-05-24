@@ -19,7 +19,7 @@ export class EventService {
 
   public async create(eventRequest: EventRequest, user: User): Promise<Event> {
     const event = plainToClass(Event, eventRequest);
-    event.owner = user;
+    event.manager = user;
     event.status = EventStatus.OPEN;
 
     this.validate(event, user);
@@ -29,13 +29,13 @@ export class EventService {
 
   public async findManagedEvents(user: User): Promise<Event[]> {
     return Event.find({
-      owner: user,
+      manager: user,
     });
   }
 
   public async findById(id: string, user: User): Promise<Event> {
     const event = await Event.findOne({
-      id, owner: user,
+      id, manager: user,
     });
 
     if (!event) {

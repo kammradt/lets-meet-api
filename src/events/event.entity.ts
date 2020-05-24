@@ -1,9 +1,10 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../users/user.entity';
 import { EventStatus } from './event-status.enum';
 import { Exclude } from 'class-transformer';
+import { EventAttendance } from './event-attendance.entity';
 
-@Entity('events')
+@Entity('event')
 export class Event extends BaseEntity {
 
   @PrimaryGeneratedColumn('uuid')
@@ -28,7 +29,7 @@ export class Event extends BaseEntity {
   maxAttendees: number;
 
   @Exclude()
-  @ManyToOne(type => User, owner => owner.events, { eager: false, onDelete: 'CASCADE' })
-  owner: User;
+  @ManyToOne(type => User, owner => owner.managedEvents, { eager: false, onDelete: 'CASCADE' })
+  manager: User;
 
 }

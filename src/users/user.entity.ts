@@ -25,8 +25,8 @@ export class User extends BaseEntity {
   salt: string;
 
   @Exclude()
-  @OneToMany(type => Event, event => event.owner, { eager: true })
-  events: Event[];
+  @OneToMany(type => Event, event => event.manager, { eager: true })
+  managedEvents: Event[];
 
   async hasCorrectPassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
