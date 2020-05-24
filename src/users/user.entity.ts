@@ -24,8 +24,7 @@ export class User extends BaseEntity {
   @Column()
   salt: string;
 
-  @Exclude()
-  @OneToMany(type => Event, event => event.manager, { eager: true })
+  @OneToMany(type => Event, event => event.manager, { eager: false })
   managedEvents: Event[];
 
   async hasCorrectPassword(password: string): Promise<boolean> {

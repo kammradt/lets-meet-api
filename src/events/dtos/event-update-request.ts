@@ -28,7 +28,7 @@ export class EventUpdateRequest {
 
   @IsOptional()
   @IsEnum(EventStatus)
-  status: EventStatus
+  status: EventStatus;
 
 }
 

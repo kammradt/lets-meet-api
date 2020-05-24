@@ -67,13 +67,13 @@ describe('UserRepository', () => {
       const result = await userRepository.findByEmail(mockUser.email);
 
       expect(userRepository.findOne).toHaveBeenCalledWith({ email: mockUser.email });
-      expect(result.email).toBe(mockUser.email)
+      expect(result.email).toBe(mockUser.email);
     });
 
-    it('should throw a NotFoundException',  () => {
+    it('should throw a NotFoundException', () => {
       userRepository.findOne = jest.fn().mockResolvedValue(null);
 
-      expect(userRepository.findByEmail(mockUser.email)).rejects.toThrow(NotFoundException)
+      expect(userRepository.findByEmail(mockUser.email)).rejects.toThrow(NotFoundException);
     });
   });
 

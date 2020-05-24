@@ -25,8 +25,8 @@ export class UserService {
     return this.userRepository.persist(user);
   }
 
-  public findByEmail(email: string): Promise<User> {
-    return this.userRepository.findByEmail(email);
+  public async findByEmail(email: string): Promise<User> {
+    return await this.userRepository.findByEmail(email);
   }
 
   private async hashPassword(password: string, salt: string): Promise<string> {
