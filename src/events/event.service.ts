@@ -53,9 +53,22 @@ export class EventService {
 
   private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
     this.validateNumberOfAttendees(eventUpdateRequest, event.manager);
+    this.validateIfEventIsCancelled(event)
+    this.validateIfEventIsDone(event)
     // TODO Validate if number of attendees is compatible with new number of maxAttendees
   }
 
+  private validateIfEventIsCancelled(event: Event): void {
+    if (event.status == EventStatus.CANCELED) {
+      throw new EventCancelledException(event);
+    }
+  }
+
+  private validateIfEventIsDone(event: Event): void {
+    if (event.status == EventStatus.DONE) {
+      throw new EventDoneException(event);
+    }
+  }
   private validateNumberOfAttendees(event: Event | EventUpdateRequest, user: User): void {
     const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role);
     if (event.maxAttendees > maxAttendees) {
