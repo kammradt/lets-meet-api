@@ -18,6 +18,10 @@ export class EventRepository extends Repository<Event> {
     return await this.findOneOrFail({ id, manager: user });
   }
 
+  public async findById(id: string): Promise<Event> {
+    return this.findOneOrFail(id)
+  }
+
   public async updateEvent(event: Event, eventUpdateRequest: EventUpdateRequest): Promise<Event> {
     const saved = await this.save({ ...event, ...eventUpdateRequest });
     delete saved.manager

@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventService } from '../event.service';
 import { EventRepository } from '../event.repository';
-import { EventRequest } from '../dtos/event-request';
 import { InvalidNumberOfMaxAttendeesException } from '../exceptions/Invalid-number-of-max-attendees.exception';
 import {
-  mockEvent, mockEventRequest,
+  mockEvent,
+  mockEventRequest,
   mockEventUpdateRequest,
   mockPremiumUser,
   mockRegularUser,
@@ -15,6 +15,7 @@ const mockEventRepository = () => ({
   persist: jest.fn(),
   findManagedEventsByUser: jest.fn(),
   findManagedEventById: jest.fn(),
+  findById: jest.fn(),
   updateEvent: jest.fn(),
 });
 
@@ -92,6 +93,17 @@ describe('EventsService', () => {
     });
   });
 
+  describe('findById', () => {
+    it('should return an event', async () => {
+      expect(eventRepository.findById).not.toHaveBeenCalled();
+      eventRepository.findById.mockResolvedValue('event');
+
+      const result = await eventService.findById('id');
+      expect(result).toBe('event');
+      expect(eventRepository.findById).toHaveBeenCalledWith('id');
+    });
+  });
+
   describe('update', () => {
     it('should update an event as regular user', async () => {
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
@@ -100,7 +112,7 @@ describe('EventsService', () => {
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
 
       mockEventUpdateRequest.maxAttendees = 50;
-      mockEvent.manager = mockRegularUser
+      mockEvent.manager = mockRegularUser;
 
       const result = await eventService.update('id', mockEventUpdateRequest, mockRegularUser);
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventRequest } from './dtos/event-request';
 import { Event } from './event.entity';
 import { User } from '../users/user.entity';
@@ -34,6 +34,10 @@ export class EventService {
 
   public async findManagedEventById(id: string, user: User): Promise<Event> {
     return this.eventRepository.findManagedEventById(id, user);
+  }
+
+  public async findById(id: string): Promise<Event> {
+    return await this.eventRepository.findById(id)
   }
 
   public async update(id: string, eventUpdateRequest: EventUpdateRequest, user: User): Promise<Event> {

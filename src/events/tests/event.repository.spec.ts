@@ -32,37 +32,49 @@ describe('EventRepository', () => {
 
   describe('findManagedEventsByUser', () => {
     it('should find a list of managed events', async () => {
-      expect(eventRepository.find).not.toHaveBeenCalled()
-      eventRepository.find.mockResolvedValue(mockEvents)
+      expect(eventRepository.find).not.toHaveBeenCalled();
+      eventRepository.find.mockResolvedValue(mockEvents);
 
-      const result = await eventRepository.findManagedEventsByUser(mockUser)
+      const result = await eventRepository.findManagedEventsByUser(mockUser);
 
-      expect(result).toBe(mockEvents)
-      expect(eventRepository.find).toHaveBeenCalledWith({ manager: mockUser })
+      expect(result).toBe(mockEvents);
+      expect(eventRepository.find).toHaveBeenCalledWith({ manager: mockUser });
     });
   });
 
   describe('findManagedEventById', () => {
-    it('should a managed event', async () => {
-      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled()
-      eventRepository.findOneOrFail.mockResolvedValue(mockEvent)
+    it('should find a managed event', async () => {
+      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();
+      eventRepository.findOneOrFail.mockResolvedValue(mockEvent);
 
-      const result = await eventRepository.findManagedEventById('someId', mockUser)
+      const result = await eventRepository.findManagedEventById('id', mockUser);
 
-      expect(result).toBe(mockEvent)
-      expect(eventRepository.findOneOrFail).toHaveBeenCalledWith({ id: 'someId', manager: mockUser })
+      expect(result).toBe(mockEvent);
+      expect(eventRepository.findOneOrFail).toHaveBeenCalledWith({ id: 'id', manager: mockUser });
+    });
+  });
+
+  describe('findById', () => {
+    it('should an event', async () => {
+      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();
+      eventRepository.findOneOrFail.mockResolvedValue(mockEvent);
+
+      const result = await eventRepository.findById('id');
+
+      expect(result).toBe(mockEvent);
+      expect(eventRepository.findOneOrFail).toHaveBeenCalledWith('id');
     });
   });
 
   describe('updateEvent', () => {
     it('should a update an event', async () => {
       expect(eventRepository.save).not.toHaveBeenCalled();
-      eventRepository.save.mockResolvedValue(mockEventUpdateRequest)
+      eventRepository.save.mockResolvedValue(mockEventUpdateRequest);
 
       const result = await eventRepository.updateEvent(mockEvent, mockEventUpdateRequest);
 
-      expect(result).toBe(mockEventUpdateRequest)
-      expect(eventRepository.save).toHaveBeenCalledWith({...mockEvent, ...mockEventUpdateRequest})
+      expect(result).toBe(mockEventUpdateRequest);
+      expect(eventRepository.save).toHaveBeenCalledWith({ ...mockEvent, ...mockEventUpdateRequest });
     });
   });
 
