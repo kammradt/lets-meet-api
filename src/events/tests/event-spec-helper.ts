@@ -4,6 +4,7 @@ import { EventStatus } from '../event-status.enum';
 import { EventUpdateRequest } from '../dtos/event-update-request';
 import { UserRole } from '../../users/user-role.enum';
 import { classToClass } from 'class-transformer';
+import { EventRequest } from '../dtos/event-request';
 
 const mockUser = new User();
 
@@ -32,6 +33,14 @@ mockEventUpdateRequest.description = 'newEventDescription';
 mockEventUpdateRequest.maxAttendees = 35;
 mockEventUpdateRequest.status = EventStatus.CANCELED;
 
+const mockEventRequest: EventRequest = {
+  title: 'EventTitle',
+  description: 'EventDescription',
+  startDate: new Date(),
+  endDate: new Date(this.startDate + 3600),
+  maxAttendees: 25,
+};
+
 const mockUpdatedEvent = {
   ...mockEvent, ...mockEventUpdateRequest,
 };
@@ -44,5 +53,6 @@ export {
   mockEvent1,
   mockEvents,
   mockEventUpdateRequest,
+  mockEventRequest,
   mockUpdatedEvent
 };

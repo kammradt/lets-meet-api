@@ -4,7 +4,7 @@ import { EventRepository } from '../event.repository';
 import { EventRequest } from '../dtos/event-request';
 import { InvalidNumberOfMaxAttendeesException } from '../exceptions/Invalid-number-of-max-attendees.exception';
 import {
-  mockEvent,
+  mockEvent, mockEventRequest,
   mockEventUpdateRequest,
   mockPremiumUser,
   mockRegularUser,
@@ -17,15 +17,6 @@ const mockEventRepository = () => ({
   findManagedEventById: jest.fn(),
   updateEvent: jest.fn(),
 });
-
-const mockEventRequest: EventRequest = {
-  title: 'EventTitle',
-  description: 'EventDescription',
-  startDate: new Date(),
-  endDate: new Date(this.startDate + 3600),
-  maxAttendees: 25,
-};
-
 
 describe('EventsService', () => {
   let eventService: EventService;
