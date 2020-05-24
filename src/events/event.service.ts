@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { EventRequest } from './dtos/event-request';
 import { Event } from './event.entity';
 import { User } from '../users/user.entity';
-import { plainToClass } from 'class-transformer';
-import { EventStatus } from './event-status.enum';
 import { UserRole } from '../users/user-role.enum';
 import { EventRepository } from './event.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EventUpdateRequest } from './dtos/event-update-request';
+import { classToClassFromExist, classToPlain, plainToClass } from 'class-transformer';
+import { EventStatus } from './event-status.enum';
 
 @Injectable()
 export class EventService {
@@ -22,42 +22,33 @@ export class EventService {
     event.manager = user;
     event.status = EventStatus.OPEN;
 
-    this.validate(event, user);
+    this.validateCreation(event, user);
 
-    return await event.save();
+    return await this.eventRepository.persist(event);
   }
 
   public async findManagedEventsByUser(user: User): Promise<Event[]> {
-    return Event.find({
-      manager: user,
-    });
+    return this.eventRepository.findManagedEventsByUser(user);
   }
 
   public async findManagedEventById(id: string, user: User): Promise<Event> {
-    const event = await Event.findOne({
-      id, manager: user,
-    });
-
-    if (!event) {
-      throw new NotFoundException();
-    }
-
-    return event;
+    return this.eventRepository.findManagedEventById(id, user);
   }
 
   public async update(id: string, eventUpdateRequest: EventUpdateRequest, user: User): Promise<Event> {
     const event = await this.findManagedEventById(id, user);
+    this.validateUpdate(event, eventUpdateRequest);
 
-    this.validate(event, user);
-
-    return await this.eventRepository.save({
-      ...event,
-      ...eventUpdateRequest,
-    });
+    return await this.eventRepository.updateEvent(event, eventUpdateRequest)
   }
 
-  private validate(event: Event, user: User): void {
+  private validateCreation(event: Event, user: User): void {
     this.validateNumberOfAttendees(event, user);
+  }
+
+  private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
+    this.validateNumberOfAttendees(event, event.manager);
+    // TODO Validate if number of attendees is compatible with new number of maxAttendees
   }
 
   private validateNumberOfAttendees(event: Event, user: User): void {
@@ -74,6 +65,5 @@ export class EventService {
     maxAttendeesRule[UserRole.ADMIN] = 100;
     return maxAttendeesRule[userRole];
   }
-
 
 }
