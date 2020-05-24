@@ -28,9 +28,9 @@ describe('UserRepository', () => {
   describe('persist', () => {
 
     it('should persist a User with success', async () => {
-      expect(userRepository.save).not.toHaveBeenCalled();
-
       userRepository.save.mockResolvedValue(mockUser);
+
+      expect(userRepository.save).not.toHaveBeenCalled();
 
       const saved = await userRepository.persist(mockUser);
       expect(userRepository.save).toHaveBeenCalledTimes(1);
@@ -65,6 +65,7 @@ describe('UserRepository', () => {
   describe('findByEmail', () => {
     it('should find a User with success with given email', async () => {
       userRepository.findOneOrFail.mockResolvedValue(mockUser);
+
       expect(userRepository.findOneOrFail).not.toHaveBeenCalled();
 
       const result = await userRepository.findByEmail(mockUser.email);

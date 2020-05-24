@@ -21,8 +21,9 @@ describe('EventRepository', () => {
 
   describe('persist', () => {
     it('should persist an User', async () => {
-      expect(eventRepository.save).not.toHaveBeenCalled();
       eventRepository.save.mockResolvedValue(mockEvent);
+
+      expect(eventRepository.save).not.toHaveBeenCalled();
 
       await eventRepository.persist(mockEvent);
 
@@ -32,8 +33,9 @@ describe('EventRepository', () => {
 
   describe('findManagedEventsByUser', () => {
     it('should find a list of managed events', async () => {
-      expect(eventRepository.find).not.toHaveBeenCalled();
       eventRepository.find.mockResolvedValue(mockEvents);
+
+      expect(eventRepository.find).not.toHaveBeenCalled();
 
       const result = await eventRepository.findManagedEventsByUser(mockUser);
 
@@ -44,8 +46,9 @@ describe('EventRepository', () => {
 
   describe('findManagedEventById', () => {
     it('should find a managed event', async () => {
-      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();
       eventRepository.findOneOrFail.mockResolvedValue(mockEvent);
+
+      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();
 
       const result = await eventRepository.findManagedEventById('id', mockUser);
 
@@ -56,8 +59,9 @@ describe('EventRepository', () => {
 
   describe('findById', () => {
     it('should an event', async () => {
-      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();
       eventRepository.findOneOrFail.mockResolvedValue(mockEvent);
+
+      expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();
 
       const result = await eventRepository.findById('id');
 
@@ -68,8 +72,9 @@ describe('EventRepository', () => {
 
   describe('updateEvent', () => {
     it('should a update an event', async () => {
-      expect(eventRepository.save).not.toHaveBeenCalled();
       eventRepository.save.mockResolvedValue(mockEventUpdateRequest);
+
+      expect(eventRepository.save).not.toHaveBeenCalled();
 
       const result = await eventRepository.updateEvent(mockEvent, mockEventUpdateRequest);
 

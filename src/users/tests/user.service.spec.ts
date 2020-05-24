@@ -46,13 +46,13 @@ describe('UserService', () => {
     };
 
     it('should register a user with success', async () => {
-      expect(bcrypt.genSalt).not.toHaveBeenCalled();
-      expect(bcrypt.hash).not.toHaveBeenCalled();
-      expect(userRepository.persist).not.toHaveBeenCalled();
-
       bcrypt.genSalt.mockResolvedValue('some generated salt');
       bcrypt.hash.mockResolvedValue('hashed pass');
       userRepository.persist.mockResolvedValue(mockUser);
+
+      expect(bcrypt.genSalt).not.toHaveBeenCalled();
+      expect(bcrypt.hash).not.toHaveBeenCalled();
+      expect(userRepository.persist).not.toHaveBeenCalled();
 
       const user = await userService.register(mockRegisterRequest);
       expect(user.email).toBe(mockRegisterRequest.email);
@@ -68,8 +68,9 @@ describe('UserService', () => {
 
   describe('findByEmail', () => {
     it('should find a valid User based on email', async () => {
-      expect(userRepository.findByEmail).not.toHaveBeenCalled();
       userRepository.findByEmail.mockResolvedValue(mockUser);
+
+      expect(userRepository.findByEmail).not.toHaveBeenCalled();
 
       const user = await userService.findByEmail(mockUser.email);
       expect(user.email).toBe(mockUser.email);

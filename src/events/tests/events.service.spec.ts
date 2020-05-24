@@ -40,8 +40,9 @@ describe('EventsService', () => {
 
   describe('create', () => {
     it('should create an event as regular user', () => {
-      expect(eventRepository.persist).not.toHaveBeenCalled();
       eventRepository.persist.mockResolvedValue('event');
+
+      expect(eventRepository.persist).not.toHaveBeenCalled();
 
       expect(eventService.create(mockEventRequest, mockRegularUser)).resolves.not.toThrow();
       expect(eventRepository.persist).toHaveBeenCalledTimes(1);
@@ -56,17 +57,19 @@ describe('EventsService', () => {
     });
 
     it('should create an event as premium user', () => {
-      expect(eventRepository.persist).not.toHaveBeenCalled();
       eventRepository.persist.mockResolvedValue('event');
       mockEventRequest.maxAttendees = 100;
+
+      expect(eventRepository.persist).not.toHaveBeenCalled();
 
       expect(eventService.create(mockEventRequest, mockPremiumUser)).resolves.not.toThrow();
       expect(eventRepository.persist).toHaveBeenCalledTimes(1);
     });
 
     it('should throw an InvalidNumberOfMaxAttendeesException as premium user', () => {
-      expect(eventRepository.persist).not.toHaveBeenCalled();
       mockEventRequest.maxAttendees = 101;
+
+      expect(eventRepository.persist).not.toHaveBeenCalled();
 
       expect(eventService.create(mockEventRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
       expect(eventRepository.persist).not.toHaveBeenCalled();
@@ -75,9 +78,9 @@ describe('EventsService', () => {
 
   describe('findManagedEventsByUser', () => {
     it('should return a list of managed events', async () => {
-      expect(eventRepository.findManagedEventsByUser).not.toHaveBeenCalled();
-
       eventRepository.findManagedEventsByUser.mockResolvedValue(mockEvents);
+
+      expect(eventRepository.findManagedEventsByUser).not.toHaveBeenCalled();
 
       const result = await eventService.findManagedEventsByUser(mockRegularUser);
       expect(result).toBe(mockEvents);
@@ -87,8 +90,9 @@ describe('EventsService', () => {
 
   describe('findManagedEventById', () => {
     it('should return a managed event', async () => {
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
       eventRepository.findManagedEventById.mockResolvedValue('event');
+
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
       const result = await eventService.findManagedEventById('id', mockRegularUser);
       expect(result).toBe('event');
@@ -98,8 +102,9 @@ describe('EventsService', () => {
 
   describe('findById', () => {
     it('should return an event', async () => {
-      expect(eventRepository.findById).not.toHaveBeenCalled();
       eventRepository.findById.mockResolvedValue('event');
+
+      expect(eventRepository.findById).not.toHaveBeenCalled();
 
       const result = await eventService.findById('id');
       expect(result).toBe('event');
@@ -109,13 +114,13 @@ describe('EventsService', () => {
 
   describe('update', () => {
     it('should update an event as regular user', async () => {
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
-      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       eventRepository.updateEvent.mockResolvedValue(mockUpdatedEvent);
-      eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
-
       mockEventUpdateRequest.maxAttendees = 50;
       mockEvent.manager = mockRegularUser;
+      eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
+
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
 
       const result = await eventService.update('id', mockEventUpdateRequest, mockRegularUser);
 
@@ -126,25 +131,25 @@ describe('EventsService', () => {
     });
 
     it('should throw an InvalidNumberOfMaxAttendeesException as regular user', () => {
-      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
-      eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
-
       mockEventUpdateRequest.maxAttendees = 51;
       mockEvent.manager = mockRegularUser;
+      eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
+
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
       expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
     it('should update an event as premium user', async () => {
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
-      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       eventRepository.updateEvent.mockResolvedValue(mockUpdatedEvent);
+      mockEventUpdateRequest.maxAttendees = 100;
+      mockEvent.manager = mockPremiumUser;
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
 
-      mockEvent.manager = mockPremiumUser;
-      mockEventUpdateRequest.maxAttendees = 100;
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
 
       const result = await eventService.update('id', mockEventUpdateRequest, mockPremiumUser);
 
@@ -155,25 +160,25 @@ describe('EventsService', () => {
     });
 
     it('should throw an InvalidNumberOfMaxAttendeesException as premium user', () => {
-      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
+      mockEventUpdateRequest.maxAttendees = 101;
+      mockEvent.manager = mockPremiumUser;
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
 
-      mockEvent.manager = mockPremiumUser;
-      mockEventUpdateRequest.maxAttendees = 101;
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
       expect(eventService.update('id', mockEventUpdateRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
     it('should should throw an EventCancelledException', () => {
-      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
-
       mockEvent.status = EventStatus.CANCELED
       mockEvent.manager = mockRegularUser
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
       mockEventUpdateRequest.maxAttendees = 20
+
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
       expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventCancelledException)
 
@@ -182,13 +187,13 @@ describe('EventsService', () => {
     });
 
     it('should should throw an EventDoneException', () => {
-      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
-      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
-
       mockEvent.status = EventStatus.DONE
       mockEvent.manager = mockRegularUser
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
       mockEventUpdateRequest.maxAttendees = 20
+
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
       expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventDoneException)
 
