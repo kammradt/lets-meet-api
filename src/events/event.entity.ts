@@ -2,6 +2,7 @@ import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 't
 import { User } from '../users/user.entity';
 import { EventStatus } from './event-status.enum';
 import { Exclude, Transform } from 'class-transformer';
+import { Min } from 'class-validator';
 
 @Entity('event')
 export class Event extends BaseEntity {
@@ -13,7 +14,7 @@ export class Event extends BaseEntity {
   title: string;
 
   @Column({ length: 512, nullable: true })
-  description: string;
+  description!: string;
 
   @Column()
   status: EventStatus;
@@ -25,6 +26,7 @@ export class Event extends BaseEntity {
   endDate: Date;
 
   @Column()
+  @Min(1)
   maxAttendees: number;
 
   @ManyToOne(type => User, manager => manager.managedEvents, { eager: true, onDelete: 'CASCADE' })

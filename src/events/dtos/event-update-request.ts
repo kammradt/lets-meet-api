@@ -6,29 +6,29 @@ export class EventUpdateRequest {
   @IsOptional()
   @IsString()
   @MinLength(8)
-  title: string;
+  title!: string;
 
   @IsOptional()
   @IsString()
   @MaxLength(512)
-  description: string;
+  description!: string;
 
   @IsOptional()
   @IsDateString()
-  startDate: Date;
+  startDate!: Date;
 
   @IsOptional()
   @IsDateString()
-  endDate: Date;
+  endDate!: Date;
 
   @IsOptional()
   @IsNumber()
   @Min(1)
-  maxAttendees: number;
+  maxAttendees!: number;
 
   @IsOptional()
   @IsEnum(EventStatus)
-  status: EventStatus;
+  status!: EventStatus;
 
 }
 
