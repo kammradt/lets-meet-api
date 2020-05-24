@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { EventRequest } from './dtos/event-request';
 import { Event } from './event.entity';
 import { User } from '../users/user.entity';
@@ -6,8 +6,9 @@ import { UserRole } from '../users/user-role.enum';
 import { EventRepository } from './event.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EventUpdateRequest } from './dtos/event-update-request';
-import { classToClassFromExist, classToPlain, plainToClass } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { EventStatus } from './event-status.enum';
+import { InvalidNumberOfMaxAttendeesException } from './exceptions/Invalid-number-of-max-attendees.exception';
 
 @Injectable()
 export class EventService {
@@ -39,7 +40,7 @@ export class EventService {
     const event = await this.findManagedEventById(id, user);
     this.validateUpdate(event, eventUpdateRequest);
 
-    return await this.eventRepository.updateEvent(event, eventUpdateRequest)
+    return await this.eventRepository.updateEvent(event, eventUpdateRequest);
   }
 
   private validateCreation(event: Event, user: User): void {
@@ -47,22 +48,22 @@ export class EventService {
   }
 
   private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
-    this.validateNumberOfAttendees(event, event.manager);
+    this.validateNumberOfAttendees(eventUpdateRequest, event.manager);
     // TODO Validate if number of attendees is compatible with new number of maxAttendees
   }
 
-  private validateNumberOfAttendees(event: Event, user: User): void {
+  private validateNumberOfAttendees(event: Event | EventUpdateRequest, user: User): void {
     const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role);
     if (event.maxAttendees > maxAttendees) {
-      throw new UnauthorizedException(`Users that are ${user.role} can only create events with up to ${maxAttendees} attendees`);
-      // TODO create custom exception
+      throw new InvalidNumberOfMaxAttendeesException(maxAttendees, user);
     }
   }
 
   private getMaxNumberOfAttendeesByRole(userRole: UserRole): number {
-    const maxAttendeesRule = {};
-    maxAttendeesRule[UserRole.REGULAR] = 50;
-    maxAttendeesRule[UserRole.ADMIN] = 100;
+    const maxAttendeesRule = {
+      [UserRole.REGULAR]: 50,
+      [UserRole.ADMIN]: 100,
+    };
     return maxAttendeesRule[userRole];
   }
 
