@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from '../auth/roles.guard';
 import { RequiredRoles } from '../auth/required-roles.decorator';
@@ -14,29 +14,26 @@ import { EventUpdateRequest } from './dtos/event-update-request';
 @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
 @Controller('events')
 export class EventController {
-  constructor(private eventService: EventService) {
+  constructor(
+    private eventService: EventService,
+  ) {
   }
 
   @Post()
-  create(
-    @Body() eventRequest: EventRequest,
-    @GetUser() user: User,
-  ): Promise<Event> {
+  create(@Body() eventRequest: EventRequest, @GetUser() user: User): Promise<Event> {
     return this.eventService.create(eventRequest, user);
   }
 
   @Patch(':id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() eventUpdateRequest: EventUpdateRequest,
-    @GetUser() user: User,
-  ): Promise<Event> {
+  update(@Param('id', ParseUUIDPipe) id: string,
+         @Body() eventUpdateRequest: EventUpdateRequest,
+         @GetUser() user: User): Promise<Event> {
     return this.eventService.update(id, eventUpdateRequest, user);
   }
 
   @Get()
   findManagedEvents(@GetUser() user: User): Promise<Event[]> {
-    return this.eventService.findManagedEvents(user);
+    return this.eventService.findManagedEventsByUser(user);
   }
 
   @Get(':id')

@@ -27,13 +27,13 @@ export class EventService {
     return await event.save();
   }
 
-  public async findManagedEvents(user: User): Promise<Event[]> {
+  public async findManagedEventsByUser(user: User): Promise<Event[]> {
     return Event.find({
       manager: user,
     });
   }
 
-  public async findById(id: string, user: User): Promise<Event> {
+  public async findManagedEventById(id: string, user: User): Promise<Event> {
     const event = await Event.findOne({
       id, manager: user,
     });
@@ -46,7 +46,7 @@ export class EventService {
   }
 
   public async update(id: string, eventUpdateRequest: EventUpdateRequest, user: User): Promise<Event> {
-    const event = await this.findById(id, user);
+    const event = await this.findManagedEventById(id, user);
 
     this.validate(event, user);
 
