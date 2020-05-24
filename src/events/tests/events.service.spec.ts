@@ -4,12 +4,15 @@ import { EventRepository } from '../event.repository';
 import { InvalidNumberOfMaxAttendeesException } from '../exceptions/Invalid-number-of-max-attendees.exception';
 import {
   mockEvent,
-  mockEventRequest,
+  mockEventRequest, mockEvents,
   mockEventUpdateRequest,
   mockPremiumUser,
   mockRegularUser,
   mockUpdatedEvent,
 } from './event-spec-helper';
+import { EventStatus } from '../event-status.enum';
+import { EventCancelledException } from '../exceptions/event-cancelled-exception';
+import { EventDoneException } from '../exceptions/event-done-exception';
 
 const mockEventRepository = () => ({
   persist: jest.fn(),
@@ -73,11 +76,11 @@ describe('EventsService', () => {
   describe('findManagedEventsByUser', () => {
     it('should return a list of managed events', async () => {
       expect(eventRepository.findManagedEventsByUser).not.toHaveBeenCalled();
-      const mockResult = [1, 2];
-      eventRepository.findManagedEventsByUser.mockResolvedValue(mockResult);
+
+      eventRepository.findManagedEventsByUser.mockResolvedValue(mockEvents);
 
       const result = await eventService.findManagedEventsByUser(mockRegularUser);
-      expect(result).toBe(mockResult);
+      expect(result).toBe(mockEvents);
       expect(eventRepository.findManagedEventsByUser).toHaveBeenCalledWith(mockRegularUser);
     });
   });
@@ -128,6 +131,7 @@ describe('EventsService', () => {
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
 
       mockEventUpdateRequest.maxAttendees = 51;
+      mockEvent.manager = mockRegularUser;
 
       expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
@@ -146,7 +150,7 @@ describe('EventsService', () => {
 
       expect(result).toBe(mockUpdatedEvent);
       expect(eventRepository.updateEvent).toHaveBeenCalledWith(mockEvent, mockEventUpdateRequest);
-      expect(eventRepository.findManagedEventById).toHaveBeenCalledTimes(1);
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockPremiumUser);
       expect(eventRepository.updateEvent).toHaveBeenCalledTimes(1);
     });
 
@@ -155,8 +159,40 @@ describe('EventsService', () => {
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
       eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
 
+      mockEvent.manager = mockPremiumUser;
       mockEventUpdateRequest.maxAttendees = 101;
+
       expect(eventService.update('id', mockEventUpdateRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+    });
+
+    it('should should throw an EventCancelledException', () => {
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
+
+      mockEvent.status = EventStatus.CANCELED
+      mockEvent.manager = mockRegularUser
+      eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
+      mockEventUpdateRequest.maxAttendees = 20
+
+      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventCancelledException)
+
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+    });
+
+    it('should should throw an EventDoneException', () => {
+      expect(eventRepository.updateEvent).not.toHaveBeenCalled();
+      expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
+
+      mockEvent.status = EventStatus.DONE
+      mockEvent.manager = mockRegularUser
+      eventRepository.findManagedEventById.mockResolvedValue(mockEvent);
+      mockEventUpdateRequest.maxAttendees = 20
+
+      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventDoneException)
+
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
