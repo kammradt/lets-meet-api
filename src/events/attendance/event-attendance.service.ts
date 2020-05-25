@@ -8,6 +8,7 @@ import { EventAttendanceRepository } from './event-attendance.repository';
 import { EventReachedMaxAttendeeQuantityException } from './exceptions/event-reached-max-attendee-quantity.exception';
 import { UnableToAttendToOwnEventException } from './exceptions/unable-to-attend-to-own-event.exception';
 import { UserIsNotAnEventAttendeeException } from './exceptions/user-is-not-an-event-attendee.exception';
+import { AttendeeResponse } from './dtos/attendee-response';
 
 @Injectable()
 export class EventAttendanceService {
@@ -97,7 +98,7 @@ export class EventAttendanceService {
     return eventAttendance != null;
   }
 
-  public async findAttendees(eventId: string): Promise<User[]> {
+  public async findAttendees(eventId: string): Promise<AttendeeResponse[]> {
     const event = await this.eventService.findById(eventId);
     return await this.eventAttendanceRepository.findEventAttendees(event);
   }

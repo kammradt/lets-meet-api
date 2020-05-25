@@ -15,7 +15,7 @@ export class Event extends BaseEntity {
   title: string;
 
   @Column({ length: 512, nullable: true })
-  description!: string;
+  description?: string;
 
   @Column()
   status: EventStatus;
