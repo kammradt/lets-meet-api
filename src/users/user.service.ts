@@ -5,6 +5,7 @@ import { RegisterRequest } from './dtos/register-request';
 import { UserRole } from './user-role.enum';
 import { User } from './user.entity';
 import * as bcrypt from 'bcryptjs';
+import { UpdateUserRoleRequest } from './dtos/update-user-role-request';
 
 @Injectable()
 export class UserService {
@@ -29,8 +30,21 @@ export class UserService {
     return await this.userRepository.findByEmail(email);
   }
 
+  public async findById(id: string): Promise<User> {
+    return await this.userRepository.findById(id);
+  }
+
   private async hashPassword(password: string, salt: string): Promise<string> {
     return await bcrypt.hash(password, salt);
   }
 
+  public async find(): Promise<User[]> {
+    return await this.userRepository.findUsers();
+  }
+
+  public async updateRole(id: string, updateUserRoleRequest: UpdateUserRoleRequest): Promise<User> {
+    const user = await this.findById(id);
+    user.role = updateUserRoleRequest.role;
+    return await this.userRepository.persist(user);
+  }
 }

@@ -13,4 +13,11 @@ export class UserRepository extends Repository<User> {
     return await this.findOneOrFail({ email });
   }
 
+  public async findUsers(): Promise<User[]> {
+    return await this.find()
+  }
+
+  public async findById(id: string): Promise<User> {
+    return await this.findOneOrFail(id);
+  }
 }
