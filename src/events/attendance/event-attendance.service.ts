@@ -89,7 +89,7 @@ export class EventAttendanceService {
   }
 
   private async getAttendeesQuantity(event: Event): Promise<number> {
-    return await this.eventAttendanceRepository.getAttendeeQuantity(event);
+    return await this.eventAttendanceRepository.getAttendeesQuantity(event);
   }
 
 

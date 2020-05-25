@@ -11,7 +11,7 @@ export class EventAttendanceRepository extends Repository<EventAttendance> {
     await this.save(attendance);
   }
 
-  public async getAttendeeQuantity(event: Event): Promise<number> {
+  public async getAttendeesQuantity(event: Event): Promise<number> {
     return await this.count({
       event,
       confirmation: Not(IsNull()),
