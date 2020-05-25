@@ -77,13 +77,13 @@ export class EventService {
 
   }
 
-  private validateIfEventIsCancelled(event: Event): void {
+  public validateIfEventIsCancelled(event: Event): void {
     if (event.status == EventStatus.CANCELED) {
       throw new EventCancelledException(event);
     }
   }
 
-  private validateIfEventIsDone(event: Event): void {
+  public validateIfEventIsDone(event: Event): void {
     if (event.status == EventStatus.DONE) {
       throw new EventDoneException(event);
     }

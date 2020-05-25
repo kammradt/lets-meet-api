@@ -3,7 +3,7 @@ import { User } from '../users/user.entity';
 import { EventStatus } from './event-status.enum';
 import { Exclude, Transform } from 'class-transformer';
 import { Min } from 'class-validator';
-import { EventAttendance } from './event-attendance.entity';
+import { EventAttendance } from './attendance/event-attendance.entity';
 
 @Entity('event')
 export class Event extends BaseEntity {

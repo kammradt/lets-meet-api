@@ -3,7 +3,7 @@ import { UserRole } from './user-role.enum';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
 import { Event } from '../events/event.entity';
-import { EventAttendance } from '../events/event-attendance.entity';
+import { EventAttendance } from '../events/attendance/event-attendance.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
