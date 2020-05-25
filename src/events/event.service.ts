@@ -99,7 +99,7 @@ export class EventService {
   private getMaxNumberOfAttendeesByRole(userRole: UserRole): number {
     const maxAttendeesRule = {
       [UserRole.REGULAR]: 50,
-      [UserRole.ADMIN]: 100,
+      [UserRole.PREMIUM]: 100,
     };
     return maxAttendeesRule[userRole];
   }

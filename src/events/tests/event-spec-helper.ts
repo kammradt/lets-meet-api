@@ -13,7 +13,7 @@ mockRegularUser.email = 'mock@email.com';
 mockRegularUser.role = UserRole.REGULAR;
 
 const mockPremiumUser = classToClass(mockRegularUser);
-mockPremiumUser.role = UserRole.ADMIN;
+mockPremiumUser.role = UserRole.PREMIUM;
 
 const mockEvent = new Event();
 mockEvent.title = 'EventTitle';
