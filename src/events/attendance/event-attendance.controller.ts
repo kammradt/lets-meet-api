@@ -6,6 +6,7 @@ import { EventAttendanceService } from './event-attendance.service';
 import { GetUser } from '../../auth/get-user.decorator';
 import { User } from '../../users/user.entity';
 import { UserRole } from '../../users/user-role.enum';
+import { AttendeeResponse } from './dtos/attendee-response';
 
 @UseGuards(AuthGuard(), RolesGuard)
 @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
@@ -25,7 +26,7 @@ export class EventAttendanceController {
   }
 
   @Get(':eventId/attendance')
-  findAttendees(@Param('eventId', ParseUUIDPipe) eventId: string) {
+  findAttendees(@Param('eventId', ParseUUIDPipe) eventId: string): Promise<AttendeeResponse[]> {
     return this.eventAttendanceService.findAttendees(eventId);
   }
 

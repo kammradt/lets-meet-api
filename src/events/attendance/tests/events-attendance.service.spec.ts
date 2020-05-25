@@ -6,7 +6,7 @@ import {
   mockEvent,
   mockEventAttendance,
   mockOtherUser,
-  mockQueryBuilderResultMappedToUsers,
+  mockQueryBuilderResultMappedToAttendeeResponse,
   mockUser,
 } from './event-attendance-spec-helper';
 import { EventStatus } from '../../event-status.enum';

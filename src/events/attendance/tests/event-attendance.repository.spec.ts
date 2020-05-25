@@ -4,7 +4,7 @@ import { IsNull, Not } from 'typeorm';
 import {
   mockEvent,
   mockEventAttendance, mockQueryBuilderResult,
-  mockQueryBuilderResultMappedToUsers,
+  mockQueryBuilderResultMappedToAttendeeResponse,
   mockUser,
 } from './event-attendance-spec-helper';
 
@@ -70,17 +70,17 @@ describe('EventRepository', () => {
   });
 
   describe('findEventAttendees', () => {
-    it('should find a list of users going to an event', async () => {
+    it('should find a list of AttendeeResponse', async () => {
       eventAttendanceRepository.find.mockResolvedValue(mockQueryBuilderResult);
 
       expect(eventAttendanceRepository.find).not.toHaveBeenCalled();
 
       const mappedUsers = await eventAttendanceRepository.findEventAttendees(mockEvent);
 
-      expect(mappedUsers).toEqual(mockQueryBuilderResultMappedToUsers);
+      expect(mappedUsers).toEqual(mockQueryBuilderResultMappedToAttendeeResponse);
       expect(eventAttendanceRepository.find).toHaveBeenCalledWith({
         relations: ['attendee'],
-        select: ['attendeeId'],
+        select: ['confirmation'],
         where: { event: mockEvent, confirmation: Not(IsNull()) },
       });
       expect(eventAttendanceRepository.find).toHaveBeenCalledTimes(1);
@@ -96,7 +96,7 @@ describe('EventRepository', () => {
       expect(emptyMappedUsers).toEqual([])
       expect(eventAttendanceRepository.find).toHaveBeenCalledWith({
         relations: ['attendee'],
-        select: ['attendeeId'],
+        select: ['confirmation'],
         where: { event: mockEvent, confirmation: Not(IsNull()) },
       });
       expect(eventAttendanceRepository.find).toHaveBeenCalledTimes(1);
