@@ -31,26 +31,34 @@ export class EventAttendanceService {
     }
   }
 
-  public async cancelAttendanceToEvent(eventId: string, attendee: User): Promise<void> {
-    const event = await this.eventService.findById(eventId);
+  private async validateAttendance(event: Event, attendee: User): Promise<void> {
+    this.eventService.validateIfEventIsCancelled(event);
+    this.eventService.validateIfEventIsDone(event);
+    this.validateManagerSelfAttendance(event, attendee);
+    await this.validateAttendeeMaxQuantity(event);
+  }
 
-    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(event, attendee);
-    if (!this.isAlreadyAnAttendee(eventAttendance)) {
-      throw new UserIsNotAnEventAttendeeException();
+  private validateManagerSelfAttendance(event: Event, attendee: User): void {
+    if (event.manager.id === attendee.id) {
+      throw new UnableToAttendToOwnEventException();
     }
+  }
 
-    eventAttendance.cancellation = new Date();
-    eventAttendance.confirmation = null;
+  private async validateAttendeeMaxQuantity(event: Event): Promise<void> {
+    const currentAttendeeQuantity = await this.getAttendeesQuantity(event);
+    if (currentAttendeeQuantity >= event.maxAttendees) {
+      throw new EventReachedMaxAttendeeQuantityException(currentAttendeeQuantity);
+    }
+  }
+
+  private async getAttendeesQuantity(event: Event): Promise<number> {
+    return await this.eventAttendanceRepository.getAttendeesQuantity(event);
+  }
+
+  private async updateEventAttendance(eventAttendance: EventAttendance): Promise<void> {
+    eventAttendance.confirmation = new Date();
+    eventAttendance.cancellation = null;
     await this.eventAttendanceRepository.persist(eventAttendance);
-  }
-
-  public async findAttendees(eventId: string): Promise<User[]> {
-    const event = await this.eventService.findById(eventId);
-    return await this.eventAttendanceRepository.findEventAttendees(event);
-  }
-
-  private isAlreadyAnAttendee(eventAttendance: EventAttendance) {
-    return eventAttendance != null;
   }
 
   private async createEventAttendance(attendee: User, event: Event): Promise<void> {
@@ -62,35 +70,36 @@ export class EventAttendanceService {
     await this.eventAttendanceRepository.persist(newAttendance);
   }
 
-  private async updateEventAttendance(eventAttendance: EventAttendance): Promise<void> {
-    eventAttendance.confirmation = new Date();
-    eventAttendance.cancellation = null;
+  public async cancelAttendanceToEvent(eventId: string, attendee: User): Promise<void> {
+    const event = await this.eventService.findById(eventId);
+    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(event, attendee);
+
+    await this.validateAttendanceCancellation(event, eventAttendance);
+
+    eventAttendance.cancellation = new Date();
+    eventAttendance.confirmation = null;
     await this.eventAttendanceRepository.persist(eventAttendance);
   }
 
-  private async validateAttendance(event: Event, attendee: User): Promise<void> {
+  private async validateAttendanceCancellation(event: Event, eventAttendance: EventAttendance): Promise<void> {
+    this.validateIfUserWasAnAttendee(eventAttendance);
     this.eventService.validateIfEventIsCancelled(event);
     this.eventService.validateIfEventIsDone(event);
-    this.validateManagerSelfAttendance(event, attendee);
-    await this.validateAttendeeMaxQuantity(event);
   }
 
-  private async validateAttendeeMaxQuantity(event: Event): Promise<void> {
-    const currentAttendeeQuantity = await this.getAttendeesQuantity(event);
-    if (currentAttendeeQuantity >= event.maxAttendees) {
-      throw new EventReachedMaxAttendeeQuantityException(currentAttendeeQuantity);
+  private validateIfUserWasAnAttendee(eventAttendance: EventAttendance): void {
+    if (!this.isAlreadyAnAttendee(eventAttendance)) {
+      throw new UserIsNotAnEventAttendeeException();
     }
   }
 
-  private validateManagerSelfAttendance(event: Event, attendee: User): void {
-    if (event.manager.id === attendee.id) {
-      throw new UnableToAttendToOwnEventException();
-    }
+  private isAlreadyAnAttendee(eventAttendance: EventAttendance) {
+    return eventAttendance != null;
   }
 
-  private async getAttendeesQuantity(event: Event): Promise<number> {
-    return await this.eventAttendanceRepository.getAttendeesQuantity(event);
+  public async findAttendees(eventId: string): Promise<User[]> {
+    const event = await this.eventService.findById(eventId);
+    return await this.eventAttendanceRepository.findEventAttendees(event);
   }
-
 
 }
