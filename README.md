@@ -53,7 +53,6 @@ You can verify more below!
 	- [x] Any User should be able to get own information
 	- [ ] Admins should be able to retrieve information about all users
 	- [ ] Admins should be able to update a User role
-	- [ ] Admins should be able to soft delete users
 
 - [x] **Auth module**
 	- [x] Any User should be able to perform login and receiving a JWT to use in next requests.
