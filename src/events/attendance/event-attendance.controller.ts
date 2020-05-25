@@ -25,8 +25,8 @@ export class EventAttendanceController {
   }
 
   @Get(':eventId/attendance')
-  findAttendants(@Param('eventId', ParseUUIDPipe) eventId: string) {
-    return this.eventAttendanceService.findAttendants(eventId);
+  findAttendees(@Param('eventId', ParseUUIDPipe) eventId: string) {
+    return this.eventAttendanceService.findAttendees(eventId);
   }
 
 }

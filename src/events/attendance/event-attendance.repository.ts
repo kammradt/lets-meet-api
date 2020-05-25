@@ -22,7 +22,7 @@ export class EventAttendanceRepository extends Repository<EventAttendance> {
     return await this.findOne({ event, attendee });
   }
 
-  public async findEventAttendances(event: Event): Promise<User[]> {
+  public async findEventAttendees(event: Event): Promise<User[]> {
     const attendances = await this.find({
       relations: ['attendee'],
       select: ['attendeeId'],

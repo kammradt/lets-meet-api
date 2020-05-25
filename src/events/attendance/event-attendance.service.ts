@@ -44,9 +44,9 @@ export class EventAttendanceService {
     await this.eventAttendanceRepository.persist(eventAttendance);
   }
 
-  public async findAttendants(eventId: string): Promise<User[]> {
+  public async findAttendees(eventId: string): Promise<User[]> {
     const event = await this.eventService.findById(eventId);
-    return await this.eventAttendanceRepository.findEventAttendances(event);
+    return await this.eventAttendanceRepository.findEventAttendees(event);
   }
 
   private isAlreadyAnAttendee(eventAttendance: EventAttendance) {
