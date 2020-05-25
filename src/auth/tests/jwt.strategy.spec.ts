@@ -32,8 +32,9 @@ describe('JwtStrategy', () => {
     mockJwtPayload.email = 'email@test.com';
 
     it('should return a User', async () => {
-      expect(userService.findByEmail).not.toHaveBeenCalled();
       userService.findByEmail.mockResolvedValue(mockUser);
+
+      expect(userService.findByEmail).not.toHaveBeenCalled();
 
       const foundUser = await jwtStrategy.validate(mockJwtPayload);
 

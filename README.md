@@ -53,7 +53,6 @@ You can verify more below!
 	- [x] Any User should be able to get own information
 	- [ ] Admins should be able to retrieve information about all users
 	- [ ] Admins should be able to update a User role
-	- [ ] Admins should be able to soft delete users
 
 - [x] **Auth module**
 	- [x] Any User should be able to perform login and receiving a JWT to use in next requests.
@@ -64,9 +63,9 @@ You can verify more below!
 		- [x] 100 attendees for Premium Users
 	- [x] Users should be able to edit the Event title, description, date, etc.
 	- [x] Users should be able to cancel their Events
-		- [ ] Admins should be able to cancel any Event
-	- [ ] Events should be able to hold Users requesting to attend
-	- [ ] Events should be able to hold Users requesting to exit from it
+		- [x] Admins should be able to cancel any Event
+	- [x] Events should be able to hold Users requesting to attend
+	- [x] Events should be able to hold Users requesting to exit from it
 	- [ ] Admins and the Event owner can remove a User from a specific event
 	- [ ] Users should be able to create comments, edit and delete comments on Events
 		- [ ] Event owner and Admin and remove comments from any users

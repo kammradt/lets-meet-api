@@ -50,13 +50,13 @@ describe('AuthService', () => {
     });
 
     it('should return a JwtResponse', async () => {
-      expect(userService.findByEmail).not.toHaveBeenCalled();
-      expect(user.hasCorrectPassword).not.toHaveBeenCalled();
-      expect(jwtService.sign).not.toHaveBeenCalled();
-
       userService.findByEmail.mockResolvedValue(user);
       user.hasCorrectPassword.mockResolvedValue(true);
       jwtService.sign.mockResolvedValue('123token123');
+
+      expect(userService.findByEmail).not.toHaveBeenCalled();
+      expect(user.hasCorrectPassword).not.toHaveBeenCalled();
+      expect(jwtService.sign).not.toHaveBeenCalled();
 
       const jwtResponse: JwtResponse = await authService.login(mockLoginRequest);
       expect(jwtResponse.token).toBe('123token123');

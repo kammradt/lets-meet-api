@@ -14,9 +14,7 @@ import { EventUpdateRequest } from './dtos/event-update-request';
 @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
 @Controller('events')
 export class EventController {
-  constructor(
-    private eventService: EventService,
-  ) {
+  constructor(private eventService: EventService) {
   }
 
   @Post()
@@ -37,11 +35,14 @@ export class EventController {
   }
 
   @Get(':id')
-  findManagedEvent(
-    @Param('id', ParseUUIDPipe) id: string,
-    @GetUser() user: User,
-  ): Promise<Event> {
+  findManagedEvent(@Param('id', ParseUUIDPipe) id: string, @GetUser() user: User): Promise<Event> {
     return this.eventService.findManagedEventById(id, user);
+  }
+
+  @RequiredRoles(UserRole.ADMIN)
+  @Patch(':id/cancel')
+  cancel(@Param('id', ParseUUIDPipe) id: string): Promise<Event> {
+    return this.eventService.cancel(id);
   }
 
 }

@@ -33,13 +33,14 @@ mockEventUpdateRequest.description = 'newEventDescription';
 mockEventUpdateRequest.maxAttendees = 35;
 mockEventUpdateRequest.status = EventStatus.CANCELED;
 
-const mockEventRequest: EventRequest = {
-  title: 'EventTitle',
-  description: 'EventDescription',
-  startDate: new Date(),
-  endDate: new Date(this.startDate + 3600),
-  maxAttendees: 25,
-};
+
+const mockEventRequest = new EventRequest();
+mockEventRequest.title = 'EventTitle';
+mockEventRequest.description = 'EventDescription';
+mockEventRequest.startDate = new Date();
+mockEventRequest.endDate = new Date(this.startDate + 3600);
+mockEventRequest.maxAttendees = 25;
+
 
 const mockUpdatedEvent = {
   ...mockEvent, ...mockEventUpdateRequest,
@@ -54,5 +55,5 @@ export {
   mockEvents,
   mockEventUpdateRequest,
   mockEventRequest,
-  mockUpdatedEvent
+  mockUpdatedEvent,
 };

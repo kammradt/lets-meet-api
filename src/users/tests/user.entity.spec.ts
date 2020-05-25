@@ -14,6 +14,7 @@ describe('User entity', () => {
   describe('hasCorrectPassword', () => {
     it('should return true if password is valid', async () => {
       bcrypt.hash.mockReturnValue('p4ssw0rd');
+
       expect(bcrypt.hash).not.toHaveBeenCalled();
 
       const result = await user.hasCorrectPassword('pass');
@@ -23,6 +24,7 @@ describe('User entity', () => {
 
     it('should return false if password is invalid', async () => {
       bcrypt.hash.mockReturnValue('n0tTh3C0rr3ctP4ss');
+
       expect(bcrypt.hash).not.toHaveBeenCalled();
 
       const result = await user.hasCorrectPassword('pass');
