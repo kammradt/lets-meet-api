@@ -2,7 +2,7 @@ import { EntityRepository, IsNull, Not, Repository } from 'typeorm';
 import { EventAttendance } from './event-attendance.entity';
 import { Event } from '../event.entity';
 import { User } from '../../users/user.entity';
-import { plainToClass } from 'class-transformer';
+import { AttendeeResponse } from './dtos/attendee-response';
 
 @EntityRepository(EventAttendance)
 export class EventAttendanceRepository extends Repository<EventAttendance> {
@@ -22,15 +22,15 @@ export class EventAttendanceRepository extends Repository<EventAttendance> {
     return await this.findOne({ event, attendee });
   }
 
-  public async findEventAttendees(event: Event): Promise<User[]> {
+  public async findEventAttendees(event: Event): Promise<AttendeeResponse[]> {
     const attendances = await this.find({
       relations: ['attendee'],
-      select: ['attendeeId'],
+      select: ['confirmation'],
       where: {
         event,
         confirmation: Not(IsNull()),
       },
     });
-    return attendances.map(attendance => plainToClass(User, attendance.attendee));
+    return attendances.map(AttendeeResponse.fromQueryBuilder);
   }
 }

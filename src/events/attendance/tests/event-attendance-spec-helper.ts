@@ -15,19 +15,26 @@ mockUser.id = '1'
 const mockOtherUser = new User()
 mockOtherUser.id = '2'
 
+
+const mockDate = new Date()
 const mockQueryBuilderResult = [
   {
-    attendeeId: '1',
+    confirmation: mockDate,
     attendee: { id: '1-1-1', email: '1@mail.com', role: 'REGULAR' },
   },
   {
-    attendeeId: '2',
+    confirmation: mockDate,
     attendee: { id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
   },
+  {
+    cancellation: mockDate,
+    attendee: { id: '3-3-3', email: '3@mail.com', role: 'REGULAR' },
+  },
 ];
-const mockQueryBuilderResultMappedToUsers = [
-  { id: '1-1-1', email: '1@mail.com', role: 'REGULAR' },
-  { id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
+const mockQueryBuilderResultMappedToAttendeeResponse = [
+  { confirmation: mockDate, id: '1-1-1', email: '1@mail.com', role: 'REGULAR' },
+  { confirmation: mockDate, id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
+  { cancellation: mockDate, id: '3-3-3', email: '3@mail.com', role: 'REGULAR' }
 ];
 
 
@@ -37,5 +44,5 @@ export {
   mockUser,
   mockOtherUser,
   mockQueryBuilderResult,
-  mockQueryBuilderResultMappedToUsers,
+  mockQueryBuilderResultMappedToAttendeeResponse,
 };
