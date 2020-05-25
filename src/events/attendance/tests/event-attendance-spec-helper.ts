@@ -1,7 +1,20 @@
+import { Event } from '../../event.entity';
+import { EventAttendance } from '../event-attendance.entity';
+import { User } from '../../../users/user.entity';
 
-const mockEventAttendance = {};
-const mockEvent = {};
-const mockUser = {};
+const mockEventAttendance = new EventAttendance();
+mockEventAttendance.confirmation = new Date();
+mockEventAttendance.cancellation = new Date();
+
+const mockEvent = new Event();
+mockEvent.maxAttendees = 40
+
+const mockUser = new User();
+mockUser.id = '1'
+
+const mockOtherUser = new User()
+mockOtherUser.id = '2'
+
 const mockQueryBuilderResult = [
   {
     attendeeId: '1',
@@ -22,6 +35,7 @@ export {
   mockEventAttendance,
   mockEvent,
   mockUser,
+  mockOtherUser,
   mockQueryBuilderResult,
-  mockQueryBuilderResultMappedToUsers
-}
+  mockQueryBuilderResultMappedToUsers,
+};
