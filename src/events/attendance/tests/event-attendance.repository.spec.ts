@@ -1,6 +1,12 @@
 import { Test } from '@nestjs/testing';
 import { EventAttendanceRepository } from '../event-attendance.repository';
 import { IsNull, Not } from 'typeorm';
+import {
+  mockEvent,
+  mockEventAttendance, mockQueryBuilderResult,
+  mockQueryBuilderResultMappedToUsers,
+  mockUser,
+} from './event-attendance-spec-helper';
 
 describe('EventRepository', () => {
   let eventAttendanceRepository;
@@ -19,24 +25,6 @@ describe('EventRepository', () => {
     eventAttendanceRepository.findOne = jest.fn();
     eventAttendanceRepository.find = jest.fn();
   });
-
-  const mockEventAttendance = {};
-  const mockEvent = {};
-  const mockUser = {};
-  const mockQueryBuilderResult = [
-    {
-      attendeeId: '1',
-      attendee: { id: '1-1-1', email: '1@mail.com', role: 'REGULAR' },
-    },
-    {
-      attendeeId: '2',
-      attendee: { id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
-    },
-  ];
-  const mockQueryBuilderResultMappedToUsers = [
-    { id: '1-1-1', email: '1@mail.com', role: 'REGULAR' },
-    { id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
-  ];
 
   describe('persist', () => {
     it('should persist an event attendance', () => {
