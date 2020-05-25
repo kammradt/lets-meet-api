@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventService } from '../event.service';
 import { EventRepository } from '../event.repository';
-import { InvalidNumberOfMaxAttendeesException } from '../exceptions/Invalid-number-of-max-attendees.exception';
+import { InvalidNumberOfMaxAttendeesByUserRoleException } from '../exceptions/invalid-number-of-max-attendees-by-userRole-exception';
 import {
   mockEvent,
   mockEventRequest,
@@ -53,7 +53,7 @@ describe('EventsService', () => {
       expect(eventRepository.persist).not.toHaveBeenCalled();
       mockEventRequest.maxAttendees = 51;
 
-      expect(eventService.create(mockEventRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
+      expect(eventService.create(mockEventRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.persist).not.toHaveBeenCalled();
     });
 
@@ -72,7 +72,7 @@ describe('EventsService', () => {
 
       expect(eventRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventService.create(mockEventRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
+      expect(eventService.create(mockEventRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.persist).not.toHaveBeenCalled();
     });
   });
@@ -139,7 +139,7 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
+      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
@@ -168,7 +168,7 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesException);
+      expect(eventService.update('id', mockEventUpdateRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 

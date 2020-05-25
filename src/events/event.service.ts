@@ -8,7 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EventUpdateRequest } from './dtos/event-update-request';
 import { plainToClass } from 'class-transformer';
 import { EventStatus } from './event-status.enum';
-import { InvalidNumberOfMaxAttendeesException } from './exceptions/Invalid-number-of-max-attendees.exception';
+import { InvalidNumberOfMaxAttendeesByUserRoleException } from './exceptions/invalid-number-of-max-attendees-by-userRole-exception';
 import { EventCancelledException } from './exceptions/event-cancelled-exception';
 import { EventDoneException } from './exceptions/event-done-exception';
 
@@ -92,7 +92,7 @@ export class EventService {
   private validateNumberOfAttendees(event: Event | EventUpdateRequest, user: User): void {
     const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role);
     if (event.maxAttendees > maxAttendees) {
-      throw new InvalidNumberOfMaxAttendeesException(maxAttendees, user);
+      throw new InvalidNumberOfMaxAttendeesByUserRoleException(maxAttendees, user);
     }
   }
 
