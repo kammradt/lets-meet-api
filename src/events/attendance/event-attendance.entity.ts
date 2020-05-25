@@ -17,7 +17,7 @@ export class EventAttendance extends BaseEntity {
   @ManyToOne(type => Event, event => event.attendees)
   event: Event;
 
-  @Column()
+  @Column({ nullable: true })
   confirmation: Date;
 
   @Column({ nullable: true })

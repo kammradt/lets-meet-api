@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventService } from '../event.service';
 import { EventRepository } from '../event.repository';
-import { InvalidNumberOfMaxAttendeesByUserRoleException } from '../exceptions/invalid-number-of-max-attendees-by-userRole-exception';
+import { InvalidNumberOfMaxAttendeesByUserRoleException } from '../exceptions/invalid-number-of-max-attendees-by-userRole.exception';
 import {
   mockEvent,
   mockEventRequest,
@@ -12,8 +12,8 @@ import {
   mockUpdatedEvent,
 } from './event-spec-helper';
 import { EventStatus } from '../event-status.enum';
-import { EventCancelledException } from '../exceptions/event-cancelled-exception';
-import { EventDoneException } from '../exceptions/event-done-exception';
+import { EventCancelledException } from '../exceptions/event-cancelled.exception';
+import { EventDoneException } from '../exceptions/event-done.exception';
 
 const mockEventRepository = () => ({
   persist: jest.fn(),

@@ -64,9 +64,9 @@ You can verify more below!
 		- [x] 100 attendees for Premium Users
 	- [x] Users should be able to edit the Event title, description, date, etc.
 	- [x] Users should be able to cancel their Events
-		- [ ] Admins should be able to cancel any Event
-	- [ ] Events should be able to hold Users requesting to attend
-	- [ ] Events should be able to hold Users requesting to exit from it
+		- [x] Admins should be able to cancel any Event
+	- [x] Events should be able to hold Users requesting to attend
+	- [x] Events should be able to hold Users requesting to exit from it
 	- [ ] Admins and the Event owner can remove a User from a specific event
 	- [ ] Users should be able to create comments, edit and delete comments on Events
 		- [ ] Event owner and Admin and remove comments from any users
