@@ -9,6 +9,7 @@ import { RequiredRoles } from '../auth/required-roles.decorator';
 import { UserRole } from './user-role.enum';
 import { UpdateUserRoleRequest } from './dtos/update-user-role-request';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate/index';
+import { PaginationOptions } from '../config/typeorm-pagination-options';
 
 @Controller('users')
 export class UserController {
@@ -29,7 +30,7 @@ export class UserController {
   @UseGuards(AuthGuard(), RolesGuard)
   @RequiredRoles(UserRole.ADMIN)
   @Get()
-  findUsers(@Query() options: IPaginationOptions): Promise<Pagination<User>> {
+  findUsers(@Query() options: PaginationOptions): Promise<Pagination<User>> {
     return this.userService.find(options);
   }
 

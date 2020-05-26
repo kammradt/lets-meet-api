@@ -7,6 +7,7 @@ import { User } from './user.entity';
 import * as bcrypt from 'bcryptjs';
 import { UpdateUserRoleRequest } from './dtos/update-user-role-request';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate/index';
+import { PaginationOptions } from '../config/typeorm-pagination-options';
 
 @Injectable()
 export class UserService {
@@ -39,7 +40,7 @@ export class UserService {
     return await bcrypt.hash(password, salt);
   }
 
-  public async find(options: IPaginationOptions): Promise<Pagination<User>> {
+  public async find(options: PaginationOptions): Promise<Pagination<User>> {
     return await this.userRepository.findUsers(options);
   }
 
