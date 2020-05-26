@@ -11,6 +11,9 @@ import { EventStatus } from './event-status.enum';
 import { InvalidNumberOfMaxAttendeesByUserRoleException } from './exceptions/invalid-number-of-max-attendees-by-userRole.exception';
 import { EventCancelledException } from './exceptions/event-cancelled.exception';
 import { EventDoneException } from './exceptions/event-done.exception';
+import { PaginationOptions } from '../config/typeorm-pagination-options';
+import { Pagination } from 'nestjs-typeorm-paginate/index';
+import { EventPaginationOptions } from './dtos/event-pagination-options';
 
 @Injectable()
 export class EventService {
@@ -30,12 +33,16 @@ export class EventService {
     return await this.eventRepository.persist(event);
   }
 
-  public async findManagedEventsByUser(user: User): Promise<Event[]> {
-    return this.eventRepository.findManagedEventsByUser(user);
+  public async findManagedEventsByUser(user: User, options: EventPaginationOptions): Promise<Pagination<Event>> {
+    return this.eventRepository.findManagedEventsByUser(user, options);
   }
 
   public async findManagedEventById(id: string, user: User): Promise<Event> {
     return this.eventRepository.findManagedEventById(id, user);
+  }
+
+  public async findEvents(options: EventPaginationOptions): Promise<Pagination<Event>> {
+    return await this.eventRepository.findEvents(options)
   }
 
   public async findById(id: string): Promise<Event> {

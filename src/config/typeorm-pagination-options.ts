@@ -8,9 +8,9 @@ export class PaginationOptions implements IPaginationOptions {
   search: string = '';
 
   @IsOptional()
-  limit: number;
+  limit: number = 10;
 
   @IsOptional()
-  page: number;
+  page: number = 1;
 
 }
