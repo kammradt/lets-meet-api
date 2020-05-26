@@ -11,10 +11,10 @@ export class EventAttendance extends BaseEntity {
   @PrimaryColumn()
   eventId: string;
 
-  @ManyToOne(type => User, user => user.eventsAttended)
+  @ManyToOne(() => User, user => user.eventsAttended)
   attendee: User;
 
-  @ManyToOne(type => Event, event => event.attendees)
+  @ManyToOne(() => Event, event => event.attendees)
   event: Event;
 
   @Column({ nullable: true })

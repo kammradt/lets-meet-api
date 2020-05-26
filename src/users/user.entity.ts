@@ -25,10 +25,10 @@ export class User extends BaseEntity {
   @Column()
   salt: string;
 
-  @OneToMany(type => Event, event => event.manager, { eager: false })
+  @OneToMany(() => Event, event => event.manager, { eager: false })
   managedEvents: Event[];
 
-  @OneToMany(type => EventAttendance, eventsAttended => eventsAttended.attendee)
+  @OneToMany(() => EventAttendance, eventsAttended => eventsAttended.attendee)
   eventsAttended: EventAttendance[];
 
 

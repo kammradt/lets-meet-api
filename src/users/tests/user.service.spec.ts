@@ -7,7 +7,7 @@ import { UserRole } from '../user-role.enum';
 import { User } from '../user.entity';
 import { mockPaginationOptions, mockUserPaginationResult } from '../../events/tests/event-spec-helper';
 
-let mockUserRepository = () => ({
+const mockUserRepository = () => ({
   persist: jest.fn(),
   findByEmail: jest.fn(),
   findUsers: jest.fn(),

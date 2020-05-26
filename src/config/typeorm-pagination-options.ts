@@ -5,12 +5,12 @@ export class PaginationOptions implements IPaginationOptions {
 
   @IsString()
   @IsOptional()
-  search: string = '';
+  search = '';
 
   @IsOptional()
-  limit: number = 10;
+  limit = 10;
 
   @IsOptional()
-  page: number = 1;
+  page = 1;
 
 }

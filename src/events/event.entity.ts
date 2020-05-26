@@ -30,11 +30,11 @@ export class Event extends BaseEntity {
   @Min(1)
   maxAttendees: number;
 
-  @ManyToOne(type => User, manager => manager.managedEvents, { eager: true, onDelete: 'CASCADE' })
+  @ManyToOne(() => User, manager => manager.managedEvents, { eager: true, onDelete: 'CASCADE' })
   @Exclude()
   manager: User;
 
-  @OneToMany(type => EventAttendance, attendees => attendees.event)
+  @OneToMany(() => EventAttendance, attendees => attendees.event)
   attendees: EventAttendance[];
 
 

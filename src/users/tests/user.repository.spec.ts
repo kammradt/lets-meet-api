@@ -17,7 +17,7 @@ describe('UserRepository', () => {
     userRepository = await module.get<UserRepository>(UserRepository);
   });
 
-  let mockUser = new User();
+  const mockUser = new User();
   mockUser.email = 'email@gmail.com.br';
   mockUser.role = UserRole.REGULAR;
   mockUser.salt = 'some generated salt';
