@@ -11,7 +11,6 @@ import { EventStatus } from './event-status.enum';
 import { InvalidNumberOfMaxAttendeesByUserRoleException } from './exceptions/invalid-number-of-max-attendees-by-userRole.exception';
 import { EventCancelledException } from './exceptions/event-cancelled.exception';
 import { EventDoneException } from './exceptions/event-done.exception';
-import { PaginationOptions } from '../config/typeorm-pagination-options';
 import { Pagination } from 'nestjs-typeorm-paginate/index';
 import { EventPaginationOptions } from './dtos/event-pagination-options';
 
@@ -42,7 +41,7 @@ export class EventService {
   }
 
   public async findEvents(options: EventPaginationOptions): Promise<Pagination<Event>> {
-    return await this.eventRepository.findEvents(options)
+    return await this.eventRepository.findEvents(options);
   }
 
   public async findById(id: string): Promise<Event> {
@@ -72,15 +71,15 @@ export class EventService {
 
   private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
     this.validateNumberOfAttendees(eventUpdateRequest, event.manager);
-    this.validateIfEventIsCancelled(event)
-    this.validateIfEventIsDone(event)
+    this.validateIfEventIsCancelled(event);
+    this.validateIfEventIsDone(event);
     // TODO Validate if number of attendees is compatible with new number of maxAttendees
   }
 
   private validateCancellation(event: Event): void {
 
-    this.validateIfEventIsCancelled(event)
-    this.validateIfEventIsDone(event)
+    this.validateIfEventIsCancelled(event);
+    this.validateIfEventIsDone(event);
 
   }
 

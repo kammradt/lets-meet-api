@@ -48,6 +48,8 @@ describe('EventRepository', () => {
       const paginate = jest.spyOn(nestjsTypeormPaginate, 'paginate');
       paginate.mockResolvedValue(mockEventPaginationResult)
 
+      expect(paginate).not.toHaveBeenCalled()
+
       const result = await eventRepository.findManagedEventsByUser(mockUser, mockEventPaginationOptions);
       expect(paginate).toHaveBeenCalledWith(eventRepository, mockEventPaginationOptions, {
         where: {
@@ -75,7 +77,7 @@ describe('EventRepository', () => {
   });
 
   describe('findById', () => {
-    it('should an event', async () => {
+    it('should find an event', async () => {
       eventRepository.findOneOrFail.mockResolvedValue(mockEvent);
 
       expect(eventRepository.findOneOrFail).not.toHaveBeenCalled();

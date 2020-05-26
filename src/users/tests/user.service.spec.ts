@@ -5,10 +5,13 @@ import * as bcrypt from 'bcryptjs';
 import { RegisterRequest } from '../dtos/register-request';
 import { UserRole } from '../user-role.enum';
 import { User } from '../user.entity';
+import { mockPaginationOptions, mockUserPaginationResult } from '../../events/tests/event-spec-helper';
 
 let mockUserRepository = () => ({
   persist: jest.fn(),
   findByEmail: jest.fn(),
+  findUsers: jest.fn(),
+  findById: jest.fn(),
 });
 
 describe('UserService', () => {
@@ -80,6 +83,33 @@ describe('UserService', () => {
       expect(user.email).toBe(mockUser.email);
 
       expect(userRepository.findByEmail).toHaveBeenCalledWith(mockUser.email);
+    });
+  });
+
+  describe('find', () => {
+    it('should find a list of users', async () => {
+      userRepository.findUsers.mockResolvedValue(mockUserPaginationResult);
+
+      expect(userRepository.findUsers).not.toHaveBeenCalled();
+
+      const result = await userService.find(mockPaginationOptions);
+      expect(result).toEqual(mockUserPaginationResult);
+      expect(userRepository.findUsers).toHaveBeenCalledWith(mockPaginationOptions);
+    });
+  });
+
+
+  describe('updateRole', () => {
+    it('should update a users role', async () => {
+      mockUser.role = UserRole.REGULAR;
+      userRepository.findById.mockResolvedValue(mockUser);
+      userRepository.persist.mockResolvedValue(mockUser)
+
+      expect(userRepository.persist).not.toHaveBeenCalled();
+
+      const result = await userService.updateRole('id', { role: UserRole.PREMIUM });
+      expect(result.role).toBe(UserRole.PREMIUM)
+      expect(userRepository.persist).toHaveBeenCalledWith({...mockUser, role: UserRole.PREMIUM})
     });
   });
 

@@ -7,6 +7,7 @@ import { classToClass } from 'class-transformer';
 import { EventRequest } from '../dtos/event-request';
 import { EventPaginationOptions } from '../dtos/event-pagination-options';
 import { Pagination } from 'nestjs-typeorm-paginate/index';
+import { PaginationOptions } from '../../config/typeorm-pagination-options';
 
 const mockUser = new User();
 
@@ -52,6 +53,13 @@ mockEventPaginationOptions.endDate = new Date().toISOString()
 
 const mockEventPaginationResult = new Pagination<Event>([], null, { });
 
+const mockPaginationOptions = new PaginationOptions();
+mockPaginationOptions.page = 2
+mockPaginationOptions.limit  = 5
+mockPaginationOptions.search = 'hire me pls'
+
+const mockUserPaginationResult = new Pagination<User>([], null, { });
+
 export {
   mockUser,
   mockRegularUser,
@@ -61,5 +69,7 @@ export {
   mockEventRequest,
   mockUpdatedEvent,
   mockEventPaginationOptions,
-  mockEventPaginationResult
+  mockEventPaginationResult,
+  mockPaginationOptions,
+  mockUserPaginationResult
 };

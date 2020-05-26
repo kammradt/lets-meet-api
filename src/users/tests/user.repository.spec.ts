@@ -2,6 +2,10 @@ import { Test } from '@nestjs/testing';
 import { UserRepository } from '../user.repository';
 import { User } from '../user.entity';
 import { UserRole } from '../user-role.enum';
+import * as nestjsTypeormPaginate from 'nestjs-typeorm-paginate/index';
+import { mockPaginationOptions, mockUserPaginationResult } from '../../events/tests/event-spec-helper';
+import { Like } from 'typeorm';
+import mock = jest.mock;
 
 describe('UserRepository', () => {
   let userRepository;
@@ -21,9 +25,9 @@ describe('UserRepository', () => {
   mockUser.password = 'hashed pass';
 
   beforeEach(() => {
-    userRepository.save = jest.fn()
-    userRepository.findOneOrFail = jest.fn()
-  })
+    userRepository.save = jest.fn();
+    userRepository.findOneOrFail = jest.fn();
+  });
 
   describe('persist', () => {
 
@@ -40,26 +44,6 @@ describe('UserRepository', () => {
       expect(saved.password).toBe(mockUser.password);
     });
 
-    // it('should throw a ConflictException on repeated email', () => {
-    //   expect(userRepository.save).not.toHaveBeenCalled();
-    //
-    //   userRepository.save.mockRejectedValue({ code: '23505' });
-    //
-    //   expect(userRepository.persist(mockUser)).rejects.toThrow(ConflictException);
-    //   expect(userRepository.save).toHaveBeenCalledTimes(1);
-    // });
-    // Handled by TypeORMFilter
-
-    // it('should throw a InternalServerErrorException', () => {
-    //   expect(mockUser.save).not.toHaveBeenCalled();
-    //
-    //   mockUser.save = jest.fn().mockRejectedValue({ code: '999999' });
-    //
-    //   expect(userRepository.persist(mockUser)).rejects.toThrow(InternalServerErrorException);
-    //   expect(mockUser.save).toHaveBeenCalledTimes(1);
-    // });
-    // Handled by TypeORMFilter
-
   });
 
   describe('findByEmail', () => {
@@ -74,13 +58,36 @@ describe('UserRepository', () => {
       expect(result.email).toBe(mockUser.email);
     });
 
-    // it('should throw a NotFoundException', () => {
-    //   userRepository.findOne = jest.fn().mockResolvedValue(null);
-    //
-    //   expect(userRepository.findByEmail(mockUser.email)).rejects.toThrow(NotFoundException);
-    // });
-    // Handled by TypeORMFilter
+  });
+
+  describe('findUsers', () => {
+    it('should return a list of users', async () => {
+      const paginate = jest.spyOn(nestjsTypeormPaginate, 'paginate');
+      paginate.mockResolvedValue(mockUserPaginationResult);
+
+      expect(paginate).not.toHaveBeenCalled();
+
+      const result = await userRepository.findUsers(mockPaginationOptions);
+      expect(result).toEqual(mockUserPaginationResult)
+      expect(paginate).toHaveBeenCalledWith(userRepository, mockPaginationOptions, {
+        where: {
+          email: Like(`%${mockPaginationOptions.search}%`)
+        }
+      })
+    });
 
   });
 
+  describe('findById', () => {
+    it('should find a user', async () => {
+      expect(userRepository.findOneOrFail).not.toHaveBeenCalled()
+
+      userRepository.findOneOrFail.mockResolvedValue(mockUser)
+
+      const result = await userRepository.findById('id0')
+      expect(result).toBe(mockUser)
+      expect(userRepository.findOneOrFail).toHaveBeenCalledWith('id0')
+    });
+
+  });
 });
