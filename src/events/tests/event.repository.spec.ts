@@ -7,9 +7,7 @@ import {
   mockEventUpdateRequest,
   mockUser,
 } from './event-spec-helper';
-import { Event } from '../event.entity';
 import * as nestjsTypeormPaginate from 'nestjs-typeorm-paginate/index';
-import { Pagination } from 'nestjs-typeorm-paginate/index';
 import { In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 
 describe('EventRepository', () => {
@@ -46,9 +44,9 @@ describe('EventRepository', () => {
   describe('findManagedEventsByUser', () => {
     it('should find a list of managed events', async () => {
       const paginate = jest.spyOn(nestjsTypeormPaginate, 'paginate');
-      paginate.mockResolvedValue(mockEventPaginationResult)
+      paginate.mockResolvedValue(mockEventPaginationResult);
 
-      expect(paginate).not.toHaveBeenCalled()
+      expect(paginate).not.toHaveBeenCalled();
 
       const result = await eventRepository.findManagedEventsByUser(mockUser, mockEventPaginationOptions);
       expect(paginate).toHaveBeenCalledWith(eventRepository, mockEventPaginationOptions, {
@@ -57,8 +55,8 @@ describe('EventRepository', () => {
           status: In([].concat(mockEventPaginationOptions.status)),
           startDate: MoreThanOrEqual(mockEventPaginationOptions.startDate),
           endDate: LessThanOrEqual(mockEventPaginationOptions.endDate),
-        }
-      })
+        },
+      });
       expect(result).toEqual(mockEventPaginationResult);
     });
   });

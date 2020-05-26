@@ -8,7 +8,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { RequiredRoles } from '../auth/required-roles.decorator';
 import { UserRole } from './user-role.enum';
 import { UpdateUserRoleRequest } from './dtos/update-user-role-request';
-import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate/index';
+import { Pagination } from 'nestjs-typeorm-paginate/index';
 import { PaginationOptions } from '../config/typeorm-pagination-options';
 
 @Controller('users')

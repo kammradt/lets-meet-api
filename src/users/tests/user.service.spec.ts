@@ -103,13 +103,13 @@ describe('UserService', () => {
     it('should update a users role', async () => {
       mockUser.role = UserRole.REGULAR;
       userRepository.findById.mockResolvedValue(mockUser);
-      userRepository.persist.mockResolvedValue(mockUser)
+      userRepository.persist.mockResolvedValue(mockUser);
 
       expect(userRepository.persist).not.toHaveBeenCalled();
 
       const result = await userService.updateRole('id', { role: UserRole.PREMIUM });
-      expect(result.role).toBe(UserRole.PREMIUM)
-      expect(userRepository.persist).toHaveBeenCalledWith({...mockUser, role: UserRole.PREMIUM})
+      expect(result.role).toBe(UserRole.PREMIUM);
+      expect(userRepository.persist).toHaveBeenCalledWith({ ...mockUser, role: UserRole.PREMIUM });
     });
   });
 

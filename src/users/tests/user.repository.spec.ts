@@ -5,7 +5,6 @@ import { UserRole } from '../user-role.enum';
 import * as nestjsTypeormPaginate from 'nestjs-typeorm-paginate/index';
 import { mockPaginationOptions, mockUserPaginationResult } from '../../events/tests/event-spec-helper';
 import { Like } from 'typeorm';
-import mock = jest.mock;
 
 describe('UserRepository', () => {
   let userRepository;
@@ -68,25 +67,25 @@ describe('UserRepository', () => {
       expect(paginate).not.toHaveBeenCalled();
 
       const result = await userRepository.findUsers(mockPaginationOptions);
-      expect(result).toEqual(mockUserPaginationResult)
+      expect(result).toEqual(mockUserPaginationResult);
       expect(paginate).toHaveBeenCalledWith(userRepository, mockPaginationOptions, {
         where: {
-          email: Like(`%${mockPaginationOptions.search}%`)
-        }
-      })
+          email: Like(`%${mockPaginationOptions.search}%`),
+        },
+      });
     });
 
   });
 
   describe('findById', () => {
     it('should find a user', async () => {
-      expect(userRepository.findOneOrFail).not.toHaveBeenCalled()
+      expect(userRepository.findOneOrFail).not.toHaveBeenCalled();
 
-      userRepository.findOneOrFail.mockResolvedValue(mockUser)
+      userRepository.findOneOrFail.mockResolvedValue(mockUser);
 
-      const result = await userRepository.findById('id0')
-      expect(result).toBe(mockUser)
-      expect(userRepository.findOneOrFail).toHaveBeenCalledWith('id0')
+      const result = await userRepository.findById('id0');
+      expect(result).toBe(mockUser);
+      expect(userRepository.findOneOrFail).toHaveBeenCalledWith('id0');
     });
 
   });

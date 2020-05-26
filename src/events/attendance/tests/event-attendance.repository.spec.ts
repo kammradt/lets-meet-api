@@ -3,7 +3,8 @@ import { EventAttendanceRepository } from '../event-attendance.repository';
 import { IsNull, Not } from 'typeorm';
 import {
   mockEvent,
-  mockEventAttendance, mockQueryBuilderResult,
+  mockEventAttendance,
+  mockQueryBuilderResult,
   mockQueryBuilderResultMappedToAttendeeResponse,
   mockUser,
 } from './event-attendance-spec-helper';
@@ -93,7 +94,7 @@ describe('EventRepository', () => {
 
       const emptyMappedUsers = await eventAttendanceRepository.findEventAttendees(mockEvent);
 
-      expect(emptyMappedUsers).toEqual([])
+      expect(emptyMappedUsers).toEqual([]);
       expect(eventAttendanceRepository.find).toHaveBeenCalledWith({
         relations: ['attendee'],
         select: ['confirmation'],

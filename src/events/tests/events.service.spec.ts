@@ -4,7 +4,8 @@ import { EventRepository } from '../event.repository';
 import { InvalidNumberOfMaxAttendeesByUserRoleException } from '../exceptions/invalid-number-of-max-attendees-by-userRole.exception';
 import {
   mockEvent,
-  mockEventPaginationOptions, mockEventPaginationResult,
+  mockEventPaginationOptions,
+  mockEventPaginationResult,
   mockEventRequest,
   mockEventUpdateRequest,
   mockPremiumUser,
@@ -14,9 +15,6 @@ import {
 import { EventStatus } from '../event-status.enum';
 import { EventCancelledException } from '../exceptions/event-cancelled.exception';
 import { EventDoneException } from '../exceptions/event-done.exception';
-import * as nestjsTypeormPaginate from 'nestjs-typeorm-paginate';
-import { Pagination } from 'nestjs-typeorm-paginate';
-import { Event } from '../event.entity';
 
 const mockEventRepository = () => ({
   persist: jest.fn(),

@@ -4,7 +4,6 @@ import { User } from '../users/user.entity';
 import { EventUpdateRequest } from './dtos/event-update-request';
 import { paginate, Pagination } from 'nestjs-typeorm-paginate/index';
 import { EventPaginationOptions } from './dtos/event-pagination-options';
-import moment = require('moment');
 
 @EntityRepository(Event)
 export class EventRepository extends Repository<Event> {
@@ -20,7 +19,7 @@ export class EventRepository extends Repository<Event> {
         status: In([].concat(options.status)),
         startDate: MoreThanOrEqual(options.startDate),
         endDate: LessThanOrEqual(options.endDate),
-      }
+      },
     });
   }
 
@@ -35,7 +34,7 @@ export class EventRepository extends Repository<Event> {
         status: In([].concat(options.status)),
         startDate: MoreThanOrEqual(options.startDate),
         endDate: LessThanOrEqual(options.endDate),
-      }
+      },
     });
   }
 

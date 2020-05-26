@@ -65,6 +65,18 @@ export class EventService {
     return await this.eventRepository.persist(event);
   }
 
+  public validateIfEventIsCancelled(event: Event): void {
+    if (event.status == EventStatus.CANCELED) {
+      throw new EventCancelledException(event);
+    }
+  }
+
+  public validateIfEventIsDone(event: Event): void {
+    if (event.status == EventStatus.DONE) {
+      throw new EventDoneException(event);
+    }
+  }
+
   private validateCreation(event: Event, user: User): void {
     this.validateNumberOfAttendees(event, user);
   }
@@ -81,18 +93,6 @@ export class EventService {
     this.validateIfEventIsCancelled(event);
     this.validateIfEventIsDone(event);
 
-  }
-
-  public validateIfEventIsCancelled(event: Event): void {
-    if (event.status == EventStatus.CANCELED) {
-      throw new EventCancelledException(event);
-    }
-  }
-
-  public validateIfEventIsDone(event: Event): void {
-    if (event.status == EventStatus.DONE) {
-      throw new EventDoneException(event);
-    }
   }
 
   private validateNumberOfAttendees(event: Event | EventUpdateRequest, user: User): void {

@@ -44,21 +44,21 @@ const mockUpdatedEvent = {
 };
 
 const mockEventPaginationOptions = new EventPaginationOptions();
-mockEventPaginationOptions.page = 3
-mockEventPaginationOptions.limit = 10
-mockEventPaginationOptions.search = 'search'
-mockEventPaginationOptions.status = [EventStatus.DONE]
-mockEventPaginationOptions.startDate = new Date().toISOString()
-mockEventPaginationOptions.endDate = new Date().toISOString()
+mockEventPaginationOptions.page = 3;
+mockEventPaginationOptions.limit = 10;
+mockEventPaginationOptions.search = 'search';
+mockEventPaginationOptions.status = [EventStatus.DONE];
+mockEventPaginationOptions.startDate = new Date().toISOString();
+mockEventPaginationOptions.endDate = new Date().toISOString();
 
-const mockEventPaginationResult = new Pagination<Event>([], null, { });
+const mockEventPaginationResult = new Pagination<Event>([], null, {});
 
 const mockPaginationOptions = new PaginationOptions();
-mockPaginationOptions.page = 2
-mockPaginationOptions.limit  = 5
-mockPaginationOptions.search = 'hire me pls'
+mockPaginationOptions.page = 2;
+mockPaginationOptions.limit = 5;
+mockPaginationOptions.search = 'hire me pls';
 
-const mockUserPaginationResult = new Pagination<User>([], null, { });
+const mockUserPaginationResult = new Pagination<User>([], null, {});
 
 export {
   mockUser,
@@ -71,5 +71,5 @@ export {
   mockEventPaginationOptions,
   mockEventPaginationResult,
   mockPaginationOptions,
-  mockUserPaginationResult
+  mockUserPaginationResult,
 };

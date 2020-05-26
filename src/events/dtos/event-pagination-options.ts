@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsEnum } from 'class-validator';
+import { IsDateString, IsEnum } from 'class-validator';
 import { PaginationOptions } from '../../config/typeorm-pagination-options';
 import { EventStatus } from '../event-status.enum';
 import moment = require('moment');

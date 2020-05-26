@@ -2,13 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventAttendanceService } from '../event-attendance.service';
 import { EventAttendanceRepository } from '../event-attendance.repository';
 import { EventService } from '../../event.service';
-import {
-  mockEvent,
-  mockEventAttendance,
-  mockOtherUser,
-  mockQueryBuilderResultMappedToAttendeeResponse,
-  mockUser,
-} from './event-attendance-spec-helper';
+import { mockEvent, mockEventAttendance, mockOtherUser, mockUser } from './event-attendance-spec-helper';
 import { EventStatus } from '../../event-status.enum';
 import { EventRepository } from '../../event.repository';
 import { EventCancelledException } from '../../exceptions/event-cancelled.exception';

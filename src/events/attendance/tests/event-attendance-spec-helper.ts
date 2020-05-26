@@ -7,16 +7,16 @@ mockEventAttendance.confirmation = new Date();
 mockEventAttendance.cancellation = new Date();
 
 const mockEvent = new Event();
-mockEvent.maxAttendees = 40
+mockEvent.maxAttendees = 40;
 
 const mockUser = new User();
-mockUser.id = '1'
+mockUser.id = '1';
 
-const mockOtherUser = new User()
-mockOtherUser.id = '2'
+const mockOtherUser = new User();
+mockOtherUser.id = '2';
 
 
-const mockDate = new Date()
+const mockDate = new Date();
 const mockQueryBuilderResult = [
   {
     confirmation: mockDate,
@@ -34,7 +34,7 @@ const mockQueryBuilderResult = [
 const mockQueryBuilderResultMappedToAttendeeResponse = [
   { confirmation: mockDate, id: '1-1-1', email: '1@mail.com', role: 'REGULAR' },
   { confirmation: mockDate, id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
-  { cancellation: mockDate, id: '3-3-3', email: '3@mail.com', role: 'REGULAR' }
+  { cancellation: mockDate, id: '3-3-3', email: '3@mail.com', role: 'REGULAR' },
 ];
 
 
