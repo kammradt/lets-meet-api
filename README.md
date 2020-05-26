@@ -78,27 +78,83 @@ You can verify more below!
 
 ##  How to use :globe_with_meridians:
 
-API: https://api-lets-meet.herokuapp.com/
+API: https://api-lets-meet.herokuapp.com/  
 Web app: https://lets-meet.now.sh/
 [Web app repo](https://github.com/kammradt/lets-meet-client)
 
 ##  How to use :house:
 
-Database:
-`docker-compose up`
+### Database setup  
 
-API Dev:
-`npm run start:dev`
+We are using PostgreSQL 12. 
 
-API Build:
-`npm run build`
+- With docker:  
+	`docker-compose up`  
 
-API tests:
-`npm run test`
+- Local database:  (look at `/config/default.json`)
+  ```js 
+	{
+	  "host": "localhost",
+      "database": "letsmeet",
+      "username": "postgres",
+      "password": "postgres",
+      "port": 5432
+	}
+	```
+***
 
-Web app:
-`npm run serve`
+### API setup  
 
+We are using NestJS.  
+> NestJS has a really usefull cli, I recommend you installing it!
+```bash
+$ npm install -g @nestjs/cli
+```
+
+Recommended TSC version: `Version 3.9.3`    
+Recommended Node version: `v12.16.3`  
+(It is easier to install using [nvm!](https://github.com/nvm-sh/nvm))
+
+- Installing Node and Typescript:  
+	```bash
+	$ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+	$ nvm install v12.16.3
+	$ npm install -g typescript
+	```
+
+- Running the API:  
+	```bash
+	$ npm run start:dev
+	```
+
+- Running tests:  
+	```bash
+	$ npm run test
+	```
+
+##  Help is always welcome :wink:
+> Because as you can see, I have absolute no ideia what I'm doing :satisfied:
+
+### How can I help?
+- You can [Fork](#) this project and modify what you want. And then, send modifications using the [Pull Request]() system.
+
+### What is and How to create a Fork?
+- A Fork is basically a copy of this repository, but in your account. So, you have access to all files and can do whatever you want with your version.  
+Using github is really easy to create a Fork, just follow:  
+> You just need to click on `Fork` button on the top right!
+![Fork instructins](https://i.imgur.com/zM6QQU2.gif)
+
+### What is and How to create a Pull Request?
+- A Pull Request is a way of putting code from multiple people together in a organized way. After your modifications on your own forked repository, you can commit those changes and push to it.  
+Now you have you repository updated with changes, but note that all those changes are only on your forked version.  
+How to put your version together with mine and have a better project? Really easy! Just follow:
+> 1. Go to the Pull Request tab
+> 2. Click on `new pull Request`
+> 3. You can verify the modifications
+> 4. Click on `Create pull Request`
+> 5. It is a good ideia to write a description of what was added
+> 5. Create it! Thanks so much!
+![PR instructins](https://im.ezgif.com/tmp/ezgif-1-861ba58d3410.gif)
 
 
 ##  Author

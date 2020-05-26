@@ -1,10 +1,4 @@
 {
-  "db": {
-    "host": "localhost",
-    "username": "postgres",
-    "password": "postgres",
-    "synchronize": true
-  },
   "jwt": {
     "secret": ";sdf#$%sfgdfDFG2;3l4;234kon3456/RTGB"
   }

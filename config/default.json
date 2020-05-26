@@ -7,11 +7,12 @@
     "database": "letsmeet",
     "username": "postgres",
     "password": "postgres",
-    "synchronize": true,
+    "port": 5432,
     "type": "postgres",
-    "port": 5432
+    "synchronize": true
   },
   "jwt": {
-    "expiresIn": 3600
+    "expiresIn": 3600,
+    "secret": "do-not-use-this-one"
   }
 }
