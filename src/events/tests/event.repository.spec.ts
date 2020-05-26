@@ -1,6 +1,16 @@
 import { EventRepository } from '../event.repository';
 import { Test } from '@nestjs/testing';
-import { mockEvent, mockEvents, mockEventUpdateRequest, mockUser } from './event-spec-helper';
+import {
+  mockEvent,
+  mockEventPaginationOptions,
+  mockEventPaginationResult,
+  mockEventUpdateRequest,
+  mockUser,
+} from './event-spec-helper';
+import { Event } from '../event.entity';
+import * as nestjsTypeormPaginate from 'nestjs-typeorm-paginate/index';
+import { Pagination } from 'nestjs-typeorm-paginate/index';
+import { In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 
 describe('EventRepository', () => {
   let eventRepository;
@@ -17,6 +27,8 @@ describe('EventRepository', () => {
     eventRepository.save = jest.fn();
     eventRepository.find = jest.fn();
     eventRepository.findOneOrFail = jest.fn();
+    eventRepository.paginate = jest.fn();
+    eventRepository.findAndCount = jest.fn();
   });
 
   describe('persist', () => {
@@ -33,14 +45,19 @@ describe('EventRepository', () => {
 
   describe('findManagedEventsByUser', () => {
     it('should find a list of managed events', async () => {
-      eventRepository.find.mockResolvedValue(mockEvents);
+      const paginate = jest.spyOn(nestjsTypeormPaginate, 'paginate');
+      paginate.mockResolvedValue(mockEventPaginationResult)
 
-      expect(eventRepository.find).not.toHaveBeenCalled();
-
-      const result = await eventRepository.findManagedEventsByUser(mockUser);
-
-      expect(result).toBe(mockEvents);
-      expect(eventRepository.find).toHaveBeenCalledWith({ manager: mockUser });
+      const result = await eventRepository.findManagedEventsByUser(mockUser, mockEventPaginationOptions);
+      expect(paginate).toHaveBeenCalledWith(eventRepository, mockEventPaginationOptions, {
+        where: {
+          title: Like(`%${mockEventPaginationOptions.search}%`),
+          status: In([].concat(mockEventPaginationOptions.status)),
+          startDate: MoreThanOrEqual(mockEventPaginationOptions.startDate),
+          endDate: LessThanOrEqual(mockEventPaginationOptions.endDate),
+        }
+      })
+      expect(result).toEqual(mockEventPaginationResult);
     });
   });
 
