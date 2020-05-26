@@ -11,6 +11,8 @@ import { EventStatus } from './event-status.enum';
 import { InvalidNumberOfMaxAttendeesByUserRoleException } from './exceptions/invalid-number-of-max-attendees-by-userRole.exception';
 import { EventCancelledException } from './exceptions/event-cancelled.exception';
 import { EventDoneException } from './exceptions/event-done.exception';
+import { Pagination } from 'nestjs-typeorm-paginate/index';
+import { EventPaginationOptions } from './dtos/event-pagination-options';
 
 @Injectable()
 export class EventService {
@@ -30,12 +32,16 @@ export class EventService {
     return await this.eventRepository.persist(event);
   }
 
-  public async findManagedEventsByUser(user: User): Promise<Event[]> {
-    return this.eventRepository.findManagedEventsByUser(user);
+  public async findManagedEventsByUser(user: User, options: EventPaginationOptions): Promise<Pagination<Event>> {
+    return this.eventRepository.findManagedEventsByUser(user, options);
   }
 
   public async findManagedEventById(id: string, user: User): Promise<Event> {
     return this.eventRepository.findManagedEventById(id, user);
+  }
+
+  public async findEvents(options: EventPaginationOptions): Promise<Pagination<Event>> {
+    return await this.eventRepository.findEvents(options);
   }
 
   public async findById(id: string): Promise<Event> {
@@ -59,24 +65,6 @@ export class EventService {
     return await this.eventRepository.persist(event);
   }
 
-  private validateCreation(event: Event, user: User): void {
-    this.validateNumberOfAttendees(event, user);
-  }
-
-  private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
-    this.validateNumberOfAttendees(eventUpdateRequest, event.manager);
-    this.validateIfEventIsCancelled(event)
-    this.validateIfEventIsDone(event)
-    // TODO Validate if number of attendees is compatible with new number of maxAttendees
-  }
-
-  private validateCancellation(event: Event): void {
-
-    this.validateIfEventIsCancelled(event)
-    this.validateIfEventIsDone(event)
-
-  }
-
   public validateIfEventIsCancelled(event: Event): void {
     if (event.status == EventStatus.CANCELED) {
       throw new EventCancelledException(event);
@@ -89,6 +77,24 @@ export class EventService {
     }
   }
 
+  private validateCreation(event: Event, user: User): void {
+    this.validateNumberOfAttendees(event, user);
+  }
+
+  private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
+    this.validateNumberOfAttendees(eventUpdateRequest, event.manager);
+    this.validateIfEventIsCancelled(event);
+    this.validateIfEventIsDone(event);
+    // TODO Validate if number of attendees is compatible with new number of maxAttendees
+  }
+
+  private validateCancellation(event: Event): void {
+
+    this.validateIfEventIsCancelled(event);
+    this.validateIfEventIsDone(event);
+
+  }
+
   private validateNumberOfAttendees(event: Event | EventUpdateRequest, user: User): void {
     const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role);
     if (event.maxAttendees > maxAttendees) {
@@ -99,7 +105,7 @@ export class EventService {
   private getMaxNumberOfAttendeesByRole(userRole: UserRole): number {
     const maxAttendeesRule = {
       [UserRole.REGULAR]: 50,
-      [UserRole.ADMIN]: 100,
+      [UserRole.PREMIUM]: 100,
     };
     return maxAttendeesRule[userRole];
   }

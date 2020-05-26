@@ -48,17 +48,18 @@ You can verify more below!
 > I'm trying to follow gitflow, so you can see my progress usings the tags from this repository too! :blush:
 
 
-- [ ] **Users module**
+- [x] **Users module**
 	- [x] Anyone should be able to register and become a User
 	- [x] Any User should be able to get own information
-	- [ ] Admins should be able to retrieve information about all users
-	- [ ] Admins should be able to update a User role
+	- [x] Admins should be able to retrieve information about all users
+	    - [ ] Create a custom PaginationOptions for listing users by role
+	- [x] Admins should be able to update a User role
 
 - [x] **Auth module**
 	- [x] Any User should be able to perform login and receiving a JWT to use in next requests.
 	- [x] This module should export authorization and authentication functionality for all other modules
 
-- [ ] **Events module**
+- [x] **Events module**
 	- [x] Regular Users should be able to create events with 50 max attendees
 		- [x] 100 attendees for Premium Users
 	- [x] Users should be able to edit the Event title, description, date, etc.

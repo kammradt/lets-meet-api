@@ -1,9 +1,15 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterRequest } from './dtos/register-request';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from './user.entity';
 import { GetUser } from '../auth/get-user.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { RequiredRoles } from '../auth/required-roles.decorator';
+import { UserRole } from './user-role.enum';
+import { UpdateUserRoleRequest } from './dtos/update-user-role-request';
+import { Pagination } from 'nestjs-typeorm-paginate/index';
+import { PaginationOptions } from '../config/typeorm-pagination-options';
 
 @Controller('users')
 export class UserController {
@@ -16,9 +22,27 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard())
-  @Get()
+  @Get('me')
   me(@GetUser() user: User): User {
     return user;
   }
+
+  @UseGuards(AuthGuard(), RolesGuard)
+  @RequiredRoles(UserRole.ADMIN)
+  @Get()
+  findUsers(@Query() options: PaginationOptions): Promise<Pagination<User>> {
+    return this.userService.find(options);
+  }
+
+  @UseGuards(AuthGuard(), RolesGuard)
+  @RequiredRoles(UserRole.ADMIN)
+  @Patch(':id/role')
+  updateUserRole(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() updateUserRoleRequest: UpdateUserRoleRequest,
+  ): Promise<User> {
+    return this.userService.updateRole(id, updateUserRoleRequest);
+  }
+
 
 }

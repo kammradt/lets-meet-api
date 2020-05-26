@@ -32,6 +32,22 @@ export class EventAttendanceService {
     }
   }
 
+  public async cancelAttendanceToEvent(eventId: string, attendee: User): Promise<void> {
+    const event = await this.eventService.findById(eventId);
+    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(event, attendee);
+
+    await this.validateAttendanceCancellation(event, eventAttendance);
+
+    eventAttendance.cancellation = new Date();
+    eventAttendance.confirmation = null;
+    await this.eventAttendanceRepository.persist(eventAttendance);
+  }
+
+  public async findAttendees(eventId: string): Promise<AttendeeResponse[]> {
+    const event = await this.eventService.findById(eventId);
+    return await this.eventAttendanceRepository.findEventAttendees(event);
+  }
+
   private async validateAttendance(event: Event, attendee: User): Promise<void> {
     this.eventService.validateIfEventIsCancelled(event);
     this.eventService.validateIfEventIsDone(event);
@@ -71,17 +87,6 @@ export class EventAttendanceService {
     await this.eventAttendanceRepository.persist(newAttendance);
   }
 
-  public async cancelAttendanceToEvent(eventId: string, attendee: User): Promise<void> {
-    const event = await this.eventService.findById(eventId);
-    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(event, attendee);
-
-    await this.validateAttendanceCancellation(event, eventAttendance);
-
-    eventAttendance.cancellation = new Date();
-    eventAttendance.confirmation = null;
-    await this.eventAttendanceRepository.persist(eventAttendance);
-  }
-
   private async validateAttendanceCancellation(event: Event, eventAttendance: EventAttendance): Promise<void> {
     this.validateIfUserWasAnAttendee(eventAttendance);
     this.eventService.validateIfEventIsCancelled(event);
@@ -96,11 +101,6 @@ export class EventAttendanceService {
 
   private isAlreadyAnAttendee(eventAttendance: EventAttendance) {
     return eventAttendance != null;
-  }
-
-  public async findAttendees(eventId: string): Promise<AttendeeResponse[]> {
-    const event = await this.eventService.findById(eventId);
-    return await this.eventAttendanceRepository.findEventAttendees(event);
   }
 
 }

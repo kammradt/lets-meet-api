@@ -4,8 +4,9 @@ import { EventRepository } from '../event.repository';
 import { InvalidNumberOfMaxAttendeesByUserRoleException } from '../exceptions/invalid-number-of-max-attendees-by-userRole.exception';
 import {
   mockEvent,
+  mockEventPaginationOptions,
+  mockEventPaginationResult,
   mockEventRequest,
-  mockEvents,
   mockEventUpdateRequest,
   mockPremiumUser,
   mockRegularUser,
@@ -21,7 +22,9 @@ const mockEventRepository = () => ({
   findManagedEventById: jest.fn(),
   findById: jest.fn(),
   updateEvent: jest.fn(),
+  findAndCount: jest.fn(),
 });
+
 
 describe('EventsService', () => {
   let eventService: EventService;
@@ -79,13 +82,13 @@ describe('EventsService', () => {
 
   describe('findManagedEventsByUser', () => {
     it('should return a list of managed events', async () => {
-      eventRepository.findManagedEventsByUser.mockResolvedValue(mockEvents);
+      eventRepository.findManagedEventsByUser.mockResolvedValue(mockEventPaginationResult);
 
       expect(eventRepository.findManagedEventsByUser).not.toHaveBeenCalled();
 
-      const result = await eventService.findManagedEventsByUser(mockRegularUser);
-      expect(result).toBe(mockEvents);
-      expect(eventRepository.findManagedEventsByUser).toHaveBeenCalledWith(mockRegularUser);
+      const result = await eventService.findManagedEventsByUser(mockRegularUser, mockEventPaginationOptions);
+      expect(eventRepository.findManagedEventsByUser).toHaveBeenCalledWith(mockRegularUser, mockEventPaginationOptions);
+      expect(result).toEqual(mockEventPaginationResult);
     });
   });
 
@@ -217,14 +220,14 @@ describe('EventsService', () => {
       const result = await eventService.cancel('id');
 
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
-      expect(result).toBe('event')
+      expect(result).toBe('event');
     });
 
     it('should throw an EventCancelledException', () => {
       mockEvent.status = EventStatus.CANCELED;
       eventRepository.findById.mockResolvedValue(mockEvent);
 
-      expect(eventService.cancel('id')).rejects.toThrow(EventCancelledException)
+      expect(eventService.cancel('id')).rejects.toThrow(EventCancelledException);
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
     });
 
@@ -232,7 +235,7 @@ describe('EventsService', () => {
       mockEvent.status = EventStatus.DONE;
       eventRepository.findById.mockResolvedValue(mockEvent);
 
-      expect(eventService.cancel('id')).rejects.toThrow(EventDoneException)
+      expect(eventService.cancel('id')).rejects.toThrow(EventDoneException);
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
     });
 
