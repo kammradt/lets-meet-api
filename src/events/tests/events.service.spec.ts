@@ -215,12 +215,15 @@ describe('EventsService', () => {
     it('should cancel an event', async () => {
       mockEvent.status = EventStatus.OPEN;
       eventRepository.findById.mockResolvedValue(mockEvent);
-      eventRepository.persist.mockResolvedValue('event');
+      eventRepository.persist.mockResolvedValue(mockEvent);
 
       const result = await eventService.cancel('id');
 
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
-      expect(result).toBe('event');
+      expect(result.status).toBe(EventStatus.CANCELED);
+      expect(eventRepository.persist).toHaveBeenCalledWith({
+        ...mockEvent, status: EventStatus.CANCELED,
+      });
     });
 
     it('should throw an EventCancelledException', () => {

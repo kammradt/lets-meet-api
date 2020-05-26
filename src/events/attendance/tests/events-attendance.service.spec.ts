@@ -48,7 +48,9 @@ describe('EventAttendanceService', () => {
       mockEvent.manager = mockOtherUser;
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
 
-      eventAttendanceRepository.findEventAttendance.mockResolvedValue(null);
+      mockEventAttendance.confirmation = null
+      mockEventAttendance.cancellation = null
+      eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
       eventAttendanceRepository.getAttendeesQuantity.mockResolvedValue(20);
 
       expect(eventAttendanceRepository.findEventAttendance).not.toHaveBeenCalled();
@@ -56,21 +58,27 @@ describe('EventAttendanceService', () => {
 
       await eventAttendanceService.attendToEvent('id', mockUser);
 
+      expect(mockEventAttendance.cancellation).toBeNull()
+      expect(mockEventAttendance.confirmation).not.toBeNull()
       expect(eventService.findById).toHaveBeenCalledWith('id');
       expect(eventAttendanceRepository.findEventAttendance).toHaveBeenCalledWith(mockEvent, mockUser);
       expect(eventAttendanceRepository.persist).toHaveBeenCalledTimes(1);
     });
 
-    it('should update an attendance an event where previously had the presence canceled', async () => {
+    it('should update an attendance to an event where previously had the presence canceled', async () => {
       mockEvent.status = EventStatus.OPEN;
       mockEvent.manager = mockOtherUser;
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
 
+      mockEventAttendance.confirmation = null
+      mockEventAttendance.cancellation = new Date()
       eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
       eventAttendanceRepository.getAttendeesQuantity.mockResolvedValue(20);
 
       await eventAttendanceService.attendToEvent('id2', mockUser);
 
+      expect(mockEventAttendance.cancellation).toBeNull()
+      expect(mockEventAttendance.confirmation).not.toBeNull()
       expect(eventService.findById).toHaveBeenCalledWith('id2');
       expect(eventAttendanceRepository.findEventAttendance).toHaveBeenCalledWith(mockEvent, mockUser);
       expect(eventAttendanceRepository.persist).toHaveBeenCalledTimes(1);
@@ -128,15 +136,19 @@ describe('EventAttendanceService', () => {
   });
 
   describe('cancelAttendanceToEvent', () => {
-    it('should cancel an attendance to an event', () => {
+    it('should cancel an attendance to an event', async () => {
       mockEvent.status = EventStatus.OPEN;
       mockEvent.manager = mockOtherUser;
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
+      mockEventAttendance.confirmation = new Date()
+      mockEventAttendance.cancellation = null
       eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.cancelAttendanceToEvent('id1', mockUser)).resolves.not.toThrow();
+      await eventAttendanceService.cancelAttendanceToEvent('id1', mockUser);
+      expect(mockEventAttendance.confirmation).toBeNull()
+      expect(mockEventAttendance.cancellation).not.toBeNull()
       expect(eventService.findById).toHaveBeenCalledWith('id1');
     });
 
