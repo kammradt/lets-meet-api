@@ -1,5 +1,6 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { User } from './user.entity';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate/index';
 
 
 @EntityRepository(User)
@@ -13,8 +14,8 @@ export class UserRepository extends Repository<User> {
     return await this.findOneOrFail({ email });
   }
 
-  public async findUsers(): Promise<User[]> {
-    return await this.find()
+  public async findUsers(options: IPaginationOptions): Promise<Pagination<User>> {
+    return await paginate<User>(this, options)
   }
 
   public async findById(id: string): Promise<User> {

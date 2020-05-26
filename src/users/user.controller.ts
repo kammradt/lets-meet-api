@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterRequest } from './dtos/register-request';
 import { AuthGuard } from '@nestjs/passport';
@@ -8,6 +8,7 @@ import { RolesGuard } from '../auth/roles.guard';
 import { RequiredRoles } from '../auth/required-roles.decorator';
 import { UserRole } from './user-role.enum';
 import { UpdateUserRoleRequest } from './dtos/update-user-role-request';
+import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate/index';
 
 @Controller('users')
 export class UserController {
@@ -28,8 +29,8 @@ export class UserController {
   @UseGuards(AuthGuard(), RolesGuard)
   @RequiredRoles(UserRole.ADMIN)
   @Get()
-  findUsers(): Promise<User[]> {
-    return this.userService.find();
+  findUsers(@Query() options: IPaginationOptions): Promise<Pagination<User>> {
+    return this.userService.find(options);
   }
 
   @UseGuards(AuthGuard(), RolesGuard)
