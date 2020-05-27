@@ -24,6 +24,7 @@ async function start() {
 
   addDTOsConfiguration(app);
   addGlobalFilters(app);
+  app.enableCors();
 
   await app.listen(port);
 }
