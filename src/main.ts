@@ -20,11 +20,11 @@ const addGlobalFilters = (app: INestApplication) => {
 async function start() {
   const serverConfig = config.get('server');
   const port = process.env.PORT || serverConfig.port;
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
 
   addDTOsConfiguration(app);
   addGlobalFilters(app);
-  app.enableCors();
+
 
   await app.listen(port);
 }
