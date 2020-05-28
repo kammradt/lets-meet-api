@@ -55,6 +55,7 @@ describe('EventRepository', () => {
           status: In([].concat(mockEventPaginationOptions.status)),
           startDate: MoreThanOrEqual(mockEventPaginationOptions.startDate),
           endDate: LessThanOrEqual(mockEventPaginationOptions.endDate),
+          manager: mockUser
         },
       });
       expect(result).toEqual(mockEventPaginationResult);

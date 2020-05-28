@@ -19,6 +19,7 @@ export class EventRepository extends Repository<Event> {
         status: In([].concat(options.status)),
         startDate: MoreThanOrEqual(options.startDate),
         endDate: LessThanOrEqual(options.endDate),
+        manager: user
       },
     });
   }
