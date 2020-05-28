@@ -16,10 +16,10 @@ const { expiresIn, secret } = config.get('jwt');
       secret: process.env.JWT_SECRET || secret,
       signOptions: { expiresIn },
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' })],
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+  ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
   exports: [JwtStrategy, PassportModule],
 })
-export class AuthModule {
-}
+export class AuthModule {}

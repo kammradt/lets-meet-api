@@ -10,14 +10,10 @@ import { EventAttendanceController } from './attendance/event-attendance.control
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([
-      EventRepository,
-      EventAttendanceRepository,
-    ]),
+    TypeOrmModule.forFeature([EventRepository, EventAttendanceRepository]),
     AuthModule,
   ],
   controllers: [EventController, EventAttendanceController],
   providers: [EventService, EventAttendanceService],
 })
-export class EventModule {
-}
+export class EventModule {}

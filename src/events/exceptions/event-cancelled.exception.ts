@@ -5,5 +5,4 @@ export class EventCancelledException extends UnauthorizedException {
   constructor(event: Event) {
     super(`Event: ${event.title} is cancelled`);
   }
-
 }

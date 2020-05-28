@@ -17,7 +17,9 @@ describe('EventRepository', () => {
       providers: [EventAttendanceRepository],
     }).compile();
 
-    eventAttendanceRepository = await module.get<EventAttendanceRepository>(EventAttendanceRepository);
+    eventAttendanceRepository = await module.get<EventAttendanceRepository>(
+      EventAttendanceRepository
+    );
   });
 
   beforeEach(() => {
@@ -31,9 +33,13 @@ describe('EventRepository', () => {
     it('should persist an event attendance', () => {
       expect(eventAttendanceRepository.save).not.toHaveBeenCalled();
 
-      expect(eventAttendanceRepository.persist(mockEventAttendance)).resolves.not.toThrow();
+      expect(
+        eventAttendanceRepository.persist(mockEventAttendance)
+      ).resolves.not.toThrow();
 
-      expect(eventAttendanceRepository.save).toHaveBeenCalledWith(mockEventAttendance);
+      expect(eventAttendanceRepository.save).toHaveBeenCalledWith(
+        mockEventAttendance
+      );
       expect(eventAttendanceRepository.save).toHaveBeenCalledTimes(1);
     });
   });
@@ -44,11 +50,14 @@ describe('EventRepository', () => {
 
       expect(eventAttendanceRepository.count).not.toHaveBeenCalled();
 
-      const result = await eventAttendanceRepository.getAttendeesQuantity(mockEvent);
+      const result = await eventAttendanceRepository.getAttendeesQuantity(
+        mockEvent
+      );
 
       expect(result).toBe(10);
       expect(eventAttendanceRepository.count).toHaveBeenCalledWith({
-        event: mockEvent, confirmation: Not(IsNull()),
+        event: mockEvent,
+        confirmation: Not(IsNull()),
       });
       expect(eventAttendanceRepository.count).toHaveBeenCalledTimes(1);
     });
@@ -60,11 +69,15 @@ describe('EventRepository', () => {
 
       expect(eventAttendanceRepository.findOne).not.toHaveBeenCalled();
 
-      const result = await eventAttendanceRepository.findEventAttendance(mockEvent, mockUser);
+      const result = await eventAttendanceRepository.findEventAttendance(
+        mockEvent,
+        mockUser
+      );
 
       expect(result).toBe(mockEventAttendance);
       expect(eventAttendanceRepository.findOne).toHaveBeenCalledWith({
-        event: mockEvent, attendee: mockUser,
+        event: mockEvent,
+        attendee: mockUser,
       });
       expect(eventAttendanceRepository.findOne).toHaveBeenCalledTimes(1);
     });
@@ -76,9 +89,13 @@ describe('EventRepository', () => {
 
       expect(eventAttendanceRepository.find).not.toHaveBeenCalled();
 
-      const mappedUsers = await eventAttendanceRepository.findEventAttendees(mockEvent);
+      const mappedUsers = await eventAttendanceRepository.findEventAttendees(
+        mockEvent
+      );
 
-      expect(mappedUsers).toEqual(mockQueryBuilderResultMappedToAttendeeResponse);
+      expect(mappedUsers).toEqual(
+        mockQueryBuilderResultMappedToAttendeeResponse
+      );
       expect(eventAttendanceRepository.find).toHaveBeenCalledWith({
         relations: ['attendee'],
         select: ['confirmation'],
@@ -92,7 +109,9 @@ describe('EventRepository', () => {
 
       expect(eventAttendanceRepository.find).not.toHaveBeenCalled();
 
-      const emptyMappedUsers = await eventAttendanceRepository.findEventAttendees(mockEvent);
+      const emptyMappedUsers = await eventAttendanceRepository.findEventAttendees(
+        mockEvent
+      );
 
       expect(emptyMappedUsers).toEqual([]);
       expect(eventAttendanceRepository.find).toHaveBeenCalledWith({
@@ -103,6 +122,4 @@ describe('EventRepository', () => {
       expect(eventAttendanceRepository.find).toHaveBeenCalledTimes(1);
     });
   });
-
-
 });

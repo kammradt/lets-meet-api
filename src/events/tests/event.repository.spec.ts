@@ -48,16 +48,23 @@ describe('EventRepository', () => {
 
       expect(paginate).not.toHaveBeenCalled();
 
-      const result = await eventRepository.findManagedEventsByUser(mockUser, mockEventPaginationOptions);
-      expect(paginate).toHaveBeenCalledWith(eventRepository, mockEventPaginationOptions, {
-        where: {
-          title: Like(`%${mockEventPaginationOptions.search}%`),
-          status: In([].concat(mockEventPaginationOptions.status)),
-          startDate: MoreThanOrEqual(mockEventPaginationOptions.startDate),
-          endDate: LessThanOrEqual(mockEventPaginationOptions.endDate),
-          manager: mockUser
-        },
-      });
+      const result = await eventRepository.findManagedEventsByUser(
+        mockUser,
+        mockEventPaginationOptions
+      );
+      expect(paginate).toHaveBeenCalledWith(
+        eventRepository,
+        mockEventPaginationOptions,
+        {
+          where: {
+            title: Like(`%${mockEventPaginationOptions.search}%`),
+            status: In([].concat(mockEventPaginationOptions.status)),
+            startDate: MoreThanOrEqual(mockEventPaginationOptions.startDate),
+            endDate: LessThanOrEqual(mockEventPaginationOptions.endDate),
+            manager: mockUser,
+          },
+        }
+      );
       expect(result).toEqual(mockEventPaginationResult);
     });
   });
@@ -71,7 +78,10 @@ describe('EventRepository', () => {
       const result = await eventRepository.findManagedEventById('id', mockUser);
 
       expect(result).toBe(mockEvent);
-      expect(eventRepository.findOneOrFail).toHaveBeenCalledWith({ id: 'id', manager: mockUser });
+      expect(eventRepository.findOneOrFail).toHaveBeenCalledWith({
+        id: 'id',
+        manager: mockUser,
+      });
     });
   });
 
@@ -94,12 +104,16 @@ describe('EventRepository', () => {
 
       expect(eventRepository.save).not.toHaveBeenCalled();
 
-      const result = await eventRepository.updateEvent(mockEvent, mockEventUpdateRequest);
+      const result = await eventRepository.updateEvent(
+        mockEvent,
+        mockEventUpdateRequest
+      );
 
       expect(result).toBe(mockEventUpdateRequest);
-      expect(eventRepository.save).toHaveBeenCalledWith({ ...mockEvent, ...mockEventUpdateRequest });
+      expect(eventRepository.save).toHaveBeenCalledWith({
+        ...mockEvent,
+        ...mockEventUpdateRequest,
+      });
     });
   });
-
-
 });

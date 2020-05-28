@@ -31,7 +31,5 @@ describe('User entity', () => {
       expect(bcrypt.hash).toHaveBeenCalledWith('pass', 'salt');
       expect(result).toBeFalsy();
     });
-
   });
-
 });

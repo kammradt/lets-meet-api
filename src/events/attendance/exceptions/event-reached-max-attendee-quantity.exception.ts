@@ -4,5 +4,4 @@ export class EventReachedMaxAttendeeQuantityException extends UnauthorizedExcept
   constructor(currentAttendeeQuantity: number) {
     super(`Event already has ${currentAttendeeQuantity} and it is full`);
   }
-
 }

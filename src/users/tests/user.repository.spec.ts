@@ -3,7 +3,10 @@ import { UserRepository } from '../user.repository';
 import { User } from '../user.entity';
 import { UserRole } from '../user-role.enum';
 import * as nestjsTypeormPaginate from 'nestjs-typeorm-paginate/index';
-import { mockPaginationOptions, mockUserPaginationResult } from '../../events/tests/event-spec-helper';
+import {
+  mockPaginationOptions,
+  mockUserPaginationResult,
+} from '../../events/tests/event-spec-helper';
 import { Like } from 'typeorm';
 
 describe('UserRepository', () => {
@@ -29,7 +32,6 @@ describe('UserRepository', () => {
   });
 
   describe('persist', () => {
-
     it('should persist a User with success', async () => {
       userRepository.save.mockResolvedValue(mockUser);
 
@@ -42,7 +44,6 @@ describe('UserRepository', () => {
       expect(saved.salt).toBe(mockUser.salt);
       expect(saved.password).toBe(mockUser.password);
     });
-
   });
 
   describe('findByEmail', () => {
@@ -53,10 +54,11 @@ describe('UserRepository', () => {
 
       const result = await userRepository.findByEmail(mockUser.email);
 
-      expect(userRepository.findOneOrFail).toHaveBeenCalledWith({ email: mockUser.email });
+      expect(userRepository.findOneOrFail).toHaveBeenCalledWith({
+        email: mockUser.email,
+      });
       expect(result.email).toBe(mockUser.email);
     });
-
   });
 
   describe('findUsers', () => {
@@ -68,13 +70,16 @@ describe('UserRepository', () => {
 
       const result = await userRepository.findUsers(mockPaginationOptions);
       expect(result).toEqual(mockUserPaginationResult);
-      expect(paginate).toHaveBeenCalledWith(userRepository, mockPaginationOptions, {
-        where: {
-          email: Like(`%${mockPaginationOptions.search}%`),
-        },
-      });
+      expect(paginate).toHaveBeenCalledWith(
+        userRepository,
+        mockPaginationOptions,
+        {
+          where: {
+            email: Like(`%${mockPaginationOptions.search}%`),
+          },
+        }
+      );
     });
-
   });
 
   describe('findById', () => {
@@ -87,6 +92,5 @@ describe('UserRepository', () => {
       expect(result).toBe(mockUser);
       expect(userRepository.findOneOrFail).toHaveBeenCalledWith('id0');
     });
-
   });
 });

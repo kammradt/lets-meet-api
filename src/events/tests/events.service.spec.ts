@@ -25,7 +25,6 @@ const mockEventRepository = () => ({
   findAndCount: jest.fn(),
 });
 
-
 describe('EventsService', () => {
   let eventService: EventService;
   let eventRepository;
@@ -48,7 +47,9 @@ describe('EventsService', () => {
 
       expect(eventRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventService.create(mockEventRequest, mockRegularUser)).resolves.not.toThrow();
+      expect(
+        eventService.create(mockEventRequest, mockRegularUser)
+      ).resolves.not.toThrow();
       expect(eventRepository.persist).toHaveBeenCalledTimes(1);
     });
 
@@ -56,7 +57,9 @@ describe('EventsService', () => {
       expect(eventRepository.persist).not.toHaveBeenCalled();
       mockEventRequest.maxAttendees = 51;
 
-      expect(eventService.create(mockEventRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
+      expect(
+        eventService.create(mockEventRequest, mockRegularUser)
+      ).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.persist).not.toHaveBeenCalled();
     });
 
@@ -66,7 +69,9 @@ describe('EventsService', () => {
 
       expect(eventRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventService.create(mockEventRequest, mockPremiumUser)).resolves.not.toThrow();
+      expect(
+        eventService.create(mockEventRequest, mockPremiumUser)
+      ).resolves.not.toThrow();
       expect(eventRepository.persist).toHaveBeenCalledTimes(1);
     });
 
@@ -75,19 +80,29 @@ describe('EventsService', () => {
 
       expect(eventRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventService.create(mockEventRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
+      expect(
+        eventService.create(mockEventRequest, mockPremiumUser)
+      ).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.persist).not.toHaveBeenCalled();
     });
   });
 
   describe('findManagedEventsByUser', () => {
     it('should return a list of managed events', async () => {
-      eventRepository.findManagedEventsByUser.mockResolvedValue(mockEventPaginationResult);
+      eventRepository.findManagedEventsByUser.mockResolvedValue(
+        mockEventPaginationResult
+      );
 
       expect(eventRepository.findManagedEventsByUser).not.toHaveBeenCalled();
 
-      const result = await eventService.findManagedEventsByUser(mockRegularUser, mockEventPaginationOptions);
-      expect(eventRepository.findManagedEventsByUser).toHaveBeenCalledWith(mockRegularUser, mockEventPaginationOptions);
+      const result = await eventService.findManagedEventsByUser(
+        mockRegularUser,
+        mockEventPaginationOptions
+      );
+      expect(eventRepository.findManagedEventsByUser).toHaveBeenCalledWith(
+        mockRegularUser,
+        mockEventPaginationOptions
+      );
       expect(result).toEqual(mockEventPaginationResult);
     });
   });
@@ -98,9 +113,15 @@ describe('EventsService', () => {
 
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      const result = await eventService.findManagedEventById('id', mockRegularUser);
+      const result = await eventService.findManagedEventById(
+        'id',
+        mockRegularUser
+      );
       expect(result).toBe('event');
-      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith(
+        'id',
+        mockRegularUser
+      );
     });
   });
 
@@ -126,10 +147,17 @@ describe('EventsService', () => {
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
 
-      const result = await eventService.update('id', mockEventUpdateRequest, mockRegularUser);
+      const result = await eventService.update(
+        'id',
+        mockEventUpdateRequest,
+        mockRegularUser
+      );
 
       expect(result).toBe(mockUpdatedEvent);
-      expect(eventRepository.updateEvent).toHaveBeenCalledWith(mockEvent, mockEventUpdateRequest);
+      expect(eventRepository.updateEvent).toHaveBeenCalledWith(
+        mockEvent,
+        mockEventUpdateRequest
+      );
       expect(eventRepository.findManagedEventById).toHaveBeenCalledTimes(1);
       expect(eventRepository.updateEvent).toHaveBeenCalledTimes(1);
     });
@@ -142,7 +170,9 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
+      expect(
+        eventService.update('id', mockEventUpdateRequest, mockRegularUser)
+      ).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
@@ -155,11 +185,21 @@ describe('EventsService', () => {
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
 
-      const result = await eventService.update('id', mockEventUpdateRequest, mockPremiumUser);
+      const result = await eventService.update(
+        'id',
+        mockEventUpdateRequest,
+        mockPremiumUser
+      );
 
       expect(result).toBe(mockUpdatedEvent);
-      expect(eventRepository.updateEvent).toHaveBeenCalledWith(mockEvent, mockEventUpdateRequest);
-      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockPremiumUser);
+      expect(eventRepository.updateEvent).toHaveBeenCalledWith(
+        mockEvent,
+        mockEventUpdateRequest
+      );
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith(
+        'id',
+        mockPremiumUser
+      );
       expect(eventRepository.updateEvent).toHaveBeenCalledTimes(1);
     });
 
@@ -171,7 +211,9 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockPremiumUser)).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
+      expect(
+        eventService.update('id', mockEventUpdateRequest, mockPremiumUser)
+      ).rejects.toThrow(InvalidNumberOfMaxAttendeesByUserRoleException);
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
@@ -184,9 +226,14 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventCancelledException);
+      expect(
+        eventService.update('id', mockEventUpdateRequest, mockRegularUser)
+      ).rejects.toThrow(EventCancelledException);
 
-      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith(
+        'id',
+        mockRegularUser
+      );
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
@@ -199,9 +246,14 @@ describe('EventsService', () => {
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
       expect(eventRepository.findManagedEventById).not.toHaveBeenCalled();
 
-      expect(eventService.update('id', mockEventUpdateRequest, mockRegularUser)).rejects.toThrow(EventDoneException);
+      expect(
+        eventService.update('id', mockEventUpdateRequest, mockRegularUser)
+      ).rejects.toThrow(EventDoneException);
 
-      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith('id', mockRegularUser);
+      expect(eventRepository.findManagedEventById).toHaveBeenCalledWith(
+        'id',
+        mockRegularUser
+      );
       expect(eventRepository.updateEvent).not.toHaveBeenCalled();
     });
 
@@ -222,7 +274,8 @@ describe('EventsService', () => {
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
       expect(result.status).toBe(EventStatus.CANCELED);
       expect(eventRepository.persist).toHaveBeenCalledWith({
-        ...mockEvent, status: EventStatus.CANCELED,
+        ...mockEvent,
+        status: EventStatus.CANCELED,
       });
     });
 
@@ -230,7 +283,9 @@ describe('EventsService', () => {
       mockEvent.status = EventStatus.CANCELED;
       eventRepository.findById.mockResolvedValue(mockEvent);
 
-      expect(eventService.cancel('id')).rejects.toThrow(EventCancelledException);
+      expect(eventService.cancel('id')).rejects.toThrow(
+        EventCancelledException
+      );
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
     });
 
@@ -241,7 +296,5 @@ describe('EventsService', () => {
       expect(eventService.cancel('id')).rejects.toThrow(EventDoneException);
       expect(eventRepository.findById).toHaveBeenCalledWith('id');
     });
-
   });
-
 });

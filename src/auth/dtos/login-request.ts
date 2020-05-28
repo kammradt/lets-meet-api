@@ -11,4 +11,3 @@ export class LoginRequest {
   @IsString()
   password: string;
 }
-

@@ -15,7 +15,6 @@ mockUser.id = '1';
 const mockOtherUser = new User();
 mockOtherUser.id = '2';
 
-
 const mockDate = new Date();
 const mockQueryBuilderResult = [
   {
@@ -36,7 +35,6 @@ const mockQueryBuilderResultMappedToAttendeeResponse = [
   { confirmation: mockDate, id: '2-2-2', email: '2@mail.com', role: 'PREMIUM' },
   { cancellation: mockDate, id: '3-3-3', email: '3@mail.com', role: 'REGULAR' },
 ];
-
 
 export {
   mockEventAttendance,
