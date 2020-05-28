@@ -1,7 +1,6 @@
 import { UserRole } from '../../../users/user-role.enum';
 
 export class AttendeeResponse {
-
   confirmation?: Date;
   cancellation?: Date;
   id: string;
@@ -24,7 +23,4 @@ export class AttendeeResponse {
 
     return response;
   }
-
 }
-
-

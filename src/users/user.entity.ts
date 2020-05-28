@@ -1,4 +1,10 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserRole } from './user-role.enum';
 import * as bcrypt from 'bcryptjs';
 import { Exclude } from 'class-transformer';
@@ -7,7 +13,6 @@ import { EventAttendance } from '../events/attendance/event-attendance.entity';
 
 @Entity('users')
 export class User extends BaseEntity {
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -25,16 +30,21 @@ export class User extends BaseEntity {
   @Column()
   salt: string;
 
-  @OneToMany(() => Event, event => event.manager, { eager: false })
+  @OneToMany(
+    () => Event,
+    event => event.manager,
+    { eager: false }
+  )
   managedEvents: Event[];
 
-  @OneToMany(() => EventAttendance, eventsAttended => eventsAttended.attendee)
+  @OneToMany(
+    () => EventAttendance,
+    eventsAttended => eventsAttended.attendee
+  )
   eventsAttended: EventAttendance[];
-
 
   async hasCorrectPassword(password: string): Promise<boolean> {
     const hash = await bcrypt.hash(password, this.salt);
     return hash === this.password;
   }
-
 }

@@ -5,7 +5,10 @@ import * as bcrypt from 'bcryptjs';
 import { RegisterRequest } from '../dtos/register-request';
 import { UserRole } from '../user-role.enum';
 import { User } from '../user.entity';
-import { mockPaginationOptions, mockUserPaginationResult } from '../../events/tests/event-spec-helper';
+import {
+  mockPaginationOptions,
+  mockUserPaginationResult,
+} from '../../events/tests/event-spec-helper';
 
 const mockUserRepository = () => ({
   persist: jest.fn(),
@@ -37,7 +40,6 @@ describe('UserService', () => {
   mockUser.password = 'hashed pass';
 
   describe('register', () => {
-
     beforeEach(() => {
       bcrypt.genSalt = jest.fn();
       bcrypt.hash = jest.fn();
@@ -65,7 +67,10 @@ describe('UserService', () => {
       expect(user.email).toBe(mockRegisterRequest.email);
 
       expect(bcrypt.genSalt).toHaveBeenCalled();
-      expect(bcrypt.hash).toHaveBeenCalledWith(mockRegisterRequest.password, user.salt);
+      expect(bcrypt.hash).toHaveBeenCalledWith(
+        mockRegisterRequest.password,
+        user.salt
+      );
     });
   });
 
@@ -94,10 +99,11 @@ describe('UserService', () => {
 
       const result = await userService.find(mockPaginationOptions);
       expect(result).toEqual(mockUserPaginationResult);
-      expect(userRepository.findUsers).toHaveBeenCalledWith(mockPaginationOptions);
+      expect(userRepository.findUsers).toHaveBeenCalledWith(
+        mockPaginationOptions
+      );
     });
   });
-
 
   describe('updateRole', () => {
     it('should update a users role', async () => {
@@ -107,10 +113,14 @@ describe('UserService', () => {
 
       expect(userRepository.persist).not.toHaveBeenCalled();
 
-      const result = await userService.updateRole('id', { role: UserRole.PREMIUM });
+      const result = await userService.updateRole('id', {
+        role: UserRole.PREMIUM,
+      });
       expect(result.role).toBe(UserRole.PREMIUM);
-      expect(userRepository.persist).toHaveBeenCalledWith({ ...mockUser, role: UserRole.PREMIUM });
+      expect(userRepository.persist).toHaveBeenCalledWith({
+        ...mockUser,
+        role: UserRole.PREMIUM,
+      });
     });
   });
-
 });

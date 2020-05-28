@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, ParseUUIDPipe, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterRequest } from './dtos/register-request';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,8 +23,7 @@ import { PaginationOptions } from '../config/typeorm-pagination-options';
 
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {
-  }
+  constructor(private userService: UserService) {}
 
   @Post()
   register(@Body() registerRequest: RegisterRequest): Promise<User> {
@@ -39,10 +48,8 @@ export class UserController {
   @Patch(':id/role')
   updateUserRole(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() updateUserRoleRequest: UpdateUserRoleRequest,
+    @Body() updateUserRoleRequest: UpdateUserRoleRequest
   ): Promise<User> {
     return this.userService.updateRole(id, updateUserRoleRequest);
   }
-
-
 }

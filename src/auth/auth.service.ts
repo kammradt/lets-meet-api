@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtResponse } from './dtos/jwt-response';
 import { LoginRequest } from './dtos/login-request';
 import { UserService } from '../users/user.service';
@@ -10,15 +15,14 @@ export class AuthService {
   constructor(
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
-    private jwtService: JwtService,
-  ) {
-  }
+    private jwtService: JwtService
+  ) {}
 
   public async login(loginRequest: LoginRequest): Promise<JwtResponse> {
     const { email, password } = loginRequest;
     const user = await this.userService.findByEmail(email);
 
-    if (!await user.hasCorrectPassword(password)) {
+    if (!(await user.hasCorrectPassword(password))) {
       throw new UnauthorizedException();
     }
 

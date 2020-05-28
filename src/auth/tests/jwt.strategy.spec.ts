@@ -8,7 +8,6 @@ const mockUserService = () => ({
   findByEmail: jest.fn(),
 });
 
-
 describe('JwtStrategy', () => {
   let jwtStrategy: JwtStrategy;
   let userService;
@@ -38,9 +37,10 @@ describe('JwtStrategy', () => {
 
       const foundUser = await jwtStrategy.validate(mockJwtPayload);
 
-      expect(userService.findByEmail).toHaveBeenCalledWith(mockJwtPayload.email);
+      expect(userService.findByEmail).toHaveBeenCalledWith(
+        mockJwtPayload.email
+      );
       expect(foundUser.email).toBe(mockUser.email);
     });
   });
-
 });

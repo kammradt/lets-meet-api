@@ -6,7 +6,6 @@ import { AttendeeResponse } from './dtos/attendee-response';
 
 @EntityRepository(EventAttendance)
 export class EventAttendanceRepository extends Repository<EventAttendance> {
-
   public async persist(attendance: EventAttendance): Promise<void> {
     await this.save(attendance);
   }
@@ -18,7 +17,10 @@ export class EventAttendanceRepository extends Repository<EventAttendance> {
     });
   }
 
-  public async findEventAttendance(event: Event, attendee: User): Promise<EventAttendance> {
+  public async findEventAttendance(
+    event: Event,
+    attendee: User
+  ): Promise<EventAttendance> {
     return await this.findOne({ event, attendee });
   }
 

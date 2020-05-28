@@ -18,9 +18,8 @@ import { EventPaginationOptions } from './dtos/event-pagination-options';
 export class EventService {
   constructor(
     @InjectRepository(EventRepository)
-    private eventRepository: EventRepository,
-  ) {
-  }
+    private eventRepository: EventRepository
+  ) {}
 
   public async create(eventRequest: EventRequest, user: User): Promise<Event> {
     const event = plainToClass(Event, eventRequest);
@@ -32,7 +31,10 @@ export class EventService {
     return await this.eventRepository.persist(event);
   }
 
-  public async findManagedEventsByUser(user: User, options: EventPaginationOptions): Promise<Pagination<Event>> {
+  public async findManagedEventsByUser(
+    user: User,
+    options: EventPaginationOptions
+  ): Promise<Pagination<Event>> {
     return this.eventRepository.findManagedEventsByUser(user, options);
   }
 
@@ -40,7 +42,9 @@ export class EventService {
     return this.eventRepository.findManagedEventById(id, user);
   }
 
-  public async findEvents(options: EventPaginationOptions): Promise<Pagination<Event>> {
+  public async findEvents(
+    options: EventPaginationOptions
+  ): Promise<Pagination<Event>> {
     return await this.eventRepository.findEvents(options);
   }
 
@@ -48,7 +52,11 @@ export class EventService {
     return await this.eventRepository.findById(id);
   }
 
-  public async update(id: string, eventUpdateRequest: EventUpdateRequest, user: User): Promise<Event> {
+  public async update(
+    id: string,
+    eventUpdateRequest: EventUpdateRequest,
+    user: User
+  ): Promise<Event> {
     const event = await this.findManagedEventById(id, user);
     this.validateUpdate(event, eventUpdateRequest);
 
@@ -81,7 +89,10 @@ export class EventService {
     this.validateNumberOfAttendees(event, user);
   }
 
-  private validateUpdate(event: Event, eventUpdateRequest: EventUpdateRequest): void {
+  private validateUpdate(
+    event: Event,
+    eventUpdateRequest: EventUpdateRequest
+  ): void {
     this.validateNumberOfAttendees(eventUpdateRequest, event.manager);
     this.validateIfEventIsCancelled(event);
     this.validateIfEventIsDone(event);
@@ -89,16 +100,20 @@ export class EventService {
   }
 
   private validateCancellation(event: Event): void {
-
     this.validateIfEventIsCancelled(event);
     this.validateIfEventIsDone(event);
-
   }
 
-  private validateNumberOfAttendees(event: Event | EventUpdateRequest, user: User): void {
+  private validateNumberOfAttendees(
+    event: Event | EventUpdateRequest,
+    user: User
+  ): void {
     const maxAttendees = this.getMaxNumberOfAttendeesByRole(user.role);
     if (event.maxAttendees > maxAttendees) {
-      throw new InvalidNumberOfMaxAttendeesByUserRoleException(maxAttendees, user);
+      throw new InvalidNumberOfMaxAttendeesByUserRoleException(
+        maxAttendees,
+        user
+      );
     }
   }
 
@@ -109,5 +124,4 @@ export class EventService {
     };
     return maxAttendeesRule[userRole];
   }
-
 }

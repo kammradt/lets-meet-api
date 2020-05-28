@@ -1,7 +1,14 @@
-import { IsDateString, IsNumber, IsOptional, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsDateString,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class EventRequest {
-
   @IsString()
   @MinLength(8)
   title: string;
@@ -20,7 +27,4 @@ export class EventRequest {
   @IsNumber()
   @Min(1)
   maxAttendees: number;
-
 }
-
-
