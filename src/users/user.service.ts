@@ -13,8 +13,8 @@ import { PaginationOptions } from '../config/typeorm-pagination-options';
 export class UserService {
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository) {
-  }
+    private userRepository: UserRepository
+  ) {}
 
   public async register(registerRequest: RegisterRequest): Promise<User> {
     const { email, password } = registerRequest;
@@ -40,7 +40,10 @@ export class UserService {
     return await this.userRepository.findUsers(options);
   }
 
-  public async updateRole(id: string, updateUserRoleRequest: UpdateUserRoleRequest): Promise<User> {
+  public async updateRole(
+    id: string,
+    updateUserRoleRequest: UpdateUserRoleRequest
+  ): Promise<User> {
     const user = await this.findById(id);
     user.role = updateUserRoleRequest.role;
     return await this.userRepository.persist(user);

@@ -2,7 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventAttendanceService } from '../event-attendance.service';
 import { EventAttendanceRepository } from '../event-attendance.repository';
 import { EventService } from '../../event.service';
-import { mockEvent, mockEventAttendance, mockOtherUser, mockUser } from './event-attendance-spec-helper';
+import {
+  mockEvent,
+  mockEventAttendance,
+  mockOtherUser,
+  mockUser,
+} from './event-attendance-spec-helper';
 import { EventStatus } from '../../event-status.enum';
 import { EventRepository } from '../../event.repository';
 import { EventCancelledException } from '../../exceptions/event-cancelled.exception';
@@ -10,7 +15,6 @@ import { EventDoneException } from '../../exceptions/event-done.exception';
 import { UnableToAttendToOwnEventException } from '../exceptions/unable-to-attend-to-own-event.exception';
 import { EventReachedMaxAttendeeQuantityException } from '../exceptions/event-reached-max-attendee-quantity.exception';
 import { UserIsNotAnEventAttendeeException } from '../exceptions/user-is-not-an-event-attendee.exception';
-
 
 const mockEventAttendanceRepository = () => ({
   findEventAttendance: jest.fn(),
@@ -32,14 +36,21 @@ describe('EventAttendanceService', () => {
       providers: [
         EventAttendanceService,
         EventService,
-        { provide: EventAttendanceRepository, useFactory: mockEventAttendanceRepository },
+        {
+          provide: EventAttendanceRepository,
+          useFactory: mockEventAttendanceRepository,
+        },
         { provide: EventRepository, useFactory: mockEventRepository },
       ],
     }).compile();
 
-    eventAttendanceService = await module.get<EventAttendanceService>(EventAttendanceService);
+    eventAttendanceService = await module.get<EventAttendanceService>(
+      EventAttendanceService
+    );
     eventService = await module.get<EventService>(EventService);
-    eventAttendanceRepository = await module.get<EventAttendanceRepository>(EventAttendanceRepository);
+    eventAttendanceRepository = await module.get<EventAttendanceRepository>(
+      EventAttendanceRepository
+    );
   });
 
   describe('attendToEvent', () => {
@@ -50,10 +61,14 @@ describe('EventAttendanceService', () => {
 
       mockEventAttendance.confirmation = null;
       mockEventAttendance.cancellation = null;
-      eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
+      eventAttendanceRepository.findEventAttendance.mockResolvedValue(
+        mockEventAttendance
+      );
       eventAttendanceRepository.getAttendeesQuantity.mockResolvedValue(20);
 
-      expect(eventAttendanceRepository.findEventAttendance).not.toHaveBeenCalled();
+      expect(
+        eventAttendanceRepository.findEventAttendance
+      ).not.toHaveBeenCalled();
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
       await eventAttendanceService.attendToEvent('id', mockUser);
@@ -61,7 +76,9 @@ describe('EventAttendanceService', () => {
       expect(mockEventAttendance.cancellation).toBeNull();
       expect(mockEventAttendance.confirmation).not.toBeNull();
       expect(eventService.findById).toHaveBeenCalledWith('id');
-      expect(eventAttendanceRepository.findEventAttendance).toHaveBeenCalledWith(mockEvent, mockUser);
+      expect(
+        eventAttendanceRepository.findEventAttendance
+      ).toHaveBeenCalledWith(mockEvent, mockUser);
       expect(eventAttendanceRepository.persist).toHaveBeenCalledTimes(1);
     });
 
@@ -72,7 +89,9 @@ describe('EventAttendanceService', () => {
 
       mockEventAttendance.confirmation = null;
       mockEventAttendance.cancellation = new Date();
-      eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
+      eventAttendanceRepository.findEventAttendance.mockResolvedValue(
+        mockEventAttendance
+      );
       eventAttendanceRepository.getAttendeesQuantity.mockResolvedValue(20);
 
       await eventAttendanceService.attendToEvent('id2', mockUser);
@@ -80,7 +99,9 @@ describe('EventAttendanceService', () => {
       expect(mockEventAttendance.cancellation).toBeNull();
       expect(mockEventAttendance.confirmation).not.toBeNull();
       expect(eventService.findById).toHaveBeenCalledWith('id2');
-      expect(eventAttendanceRepository.findEventAttendance).toHaveBeenCalledWith(mockEvent, mockUser);
+      expect(
+        eventAttendanceRepository.findEventAttendance
+      ).toHaveBeenCalledWith(mockEvent, mockUser);
       expect(eventAttendanceRepository.persist).toHaveBeenCalledTimes(1);
     });
 
@@ -90,7 +111,9 @@ describe('EventAttendanceService', () => {
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.attendToEvent('id3', mockUser)).rejects.toThrow(EventCancelledException);
+      expect(
+        eventAttendanceService.attendToEvent('id3', mockUser)
+      ).rejects.toThrow(EventCancelledException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id3');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
@@ -102,7 +125,9 @@ describe('EventAttendanceService', () => {
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.attendToEvent('id4', mockUser)).rejects.toThrow(EventDoneException);
+      expect(
+        eventAttendanceService.attendToEvent('id4', mockUser)
+      ).rejects.toThrow(EventDoneException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id4');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
@@ -115,7 +140,9 @@ describe('EventAttendanceService', () => {
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.attendToEvent('id4', mockUser)).rejects.toThrow(UnableToAttendToOwnEventException);
+      expect(
+        eventAttendanceService.attendToEvent('id4', mockUser)
+      ).rejects.toThrow(UnableToAttendToOwnEventException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id4');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
@@ -128,7 +155,9 @@ describe('EventAttendanceService', () => {
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
       eventAttendanceRepository.getAttendeesQuantity.mockResolvedValue(40);
 
-      expect(eventAttendanceService.attendToEvent('id5', mockUser)).rejects.toThrow(EventReachedMaxAttendeeQuantityException);
+      expect(
+        eventAttendanceService.attendToEvent('id5', mockUser)
+      ).rejects.toThrow(EventReachedMaxAttendeeQuantityException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id5');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
@@ -142,7 +171,9 @@ describe('EventAttendanceService', () => {
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
       mockEventAttendance.confirmation = new Date();
       mockEventAttendance.cancellation = null;
-      eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
+      eventAttendanceRepository.findEventAttendance.mockResolvedValue(
+        mockEventAttendance
+      );
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
@@ -160,7 +191,9 @@ describe('EventAttendanceService', () => {
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.cancelAttendanceToEvent('id2', mockUser)).rejects.toThrow(UserIsNotAnEventAttendeeException);
+      expect(
+        eventAttendanceService.cancelAttendanceToEvent('id2', mockUser)
+      ).rejects.toThrow(UserIsNotAnEventAttendeeException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id2');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
@@ -170,11 +203,15 @@ describe('EventAttendanceService', () => {
       mockEvent.status = EventStatus.CANCELED;
       mockEvent.manager = mockOtherUser;
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
-      eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
+      eventAttendanceRepository.findEventAttendance.mockResolvedValue(
+        mockEventAttendance
+      );
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.cancelAttendanceToEvent('id3', mockUser)).rejects.toThrow(EventCancelledException);
+      expect(
+        eventAttendanceService.cancelAttendanceToEvent('id3', mockUser)
+      ).rejects.toThrow(EventCancelledException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id3');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
@@ -184,15 +221,18 @@ describe('EventAttendanceService', () => {
       mockEvent.status = EventStatus.DONE;
       mockEvent.manager = mockOtherUser;
       eventService.findById = jest.fn().mockResolvedValue(mockEvent);
-      eventAttendanceRepository.findEventAttendance.mockResolvedValue(mockEventAttendance);
+      eventAttendanceRepository.findEventAttendance.mockResolvedValue(
+        mockEventAttendance
+      );
 
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
 
-      expect(eventAttendanceService.cancelAttendanceToEvent('id4', mockUser)).rejects.toThrow(EventDoneException);
+      expect(
+        eventAttendanceService.cancelAttendanceToEvent('id4', mockUser)
+      ).rejects.toThrow(EventDoneException);
 
       expect(eventService.findById).toHaveBeenCalledWith('id4');
       expect(eventAttendanceRepository.persist).not.toHaveBeenCalled();
     });
   });
-
 });

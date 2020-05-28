@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from '../users/user.entity';
 import { EventStatus } from './event-status.enum';
 import { Exclude } from 'class-transformer';
@@ -7,7 +14,6 @@ import { EventAttendance } from './attendance/event-attendance.entity';
 
 @Entity('event')
 export class Event extends BaseEntity {
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -30,12 +36,17 @@ export class Event extends BaseEntity {
   @Min(1)
   maxAttendees: number;
 
-  @ManyToOne(() => User, manager => manager.managedEvents, { eager: true, onDelete: 'CASCADE' })
+  @ManyToOne(
+    () => User,
+    manager => manager.managedEvents,
+    { eager: true, onDelete: 'CASCADE' }
+  )
   @Exclude()
   manager: User;
 
-  @OneToMany(() => EventAttendance, attendees => attendees.event)
+  @OneToMany(
+    () => EventAttendance,
+    attendees => attendees.event
+  )
   attendees: EventAttendance[];
-
-
 }

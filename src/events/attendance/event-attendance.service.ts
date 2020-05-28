@@ -15,16 +15,18 @@ export class EventAttendanceService {
   constructor(
     @InjectRepository(EventAttendanceRepository)
     private eventAttendanceRepository: EventAttendanceRepository,
-    private eventService: EventService,
-  ) {
-  }
+    private eventService: EventService
+  ) {}
 
   public async attendToEvent(eventId: string, attendee: User): Promise<void> {
     const event = await this.eventService.findById(eventId);
 
     await this.validateAttendance(event, attendee);
 
-    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(event, attendee);
+    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(
+      event,
+      attendee
+    );
     if (this.isAlreadyAnAttendee(eventAttendance)) {
       await this.updateEventAttendance(eventAttendance);
     } else {
@@ -32,9 +34,15 @@ export class EventAttendanceService {
     }
   }
 
-  public async cancelAttendanceToEvent(eventId: string, attendee: User): Promise<void> {
+  public async cancelAttendanceToEvent(
+    eventId: string,
+    attendee: User
+  ): Promise<void> {
     const event = await this.eventService.findById(eventId);
-    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(event, attendee);
+    const eventAttendance = await this.eventAttendanceRepository.findEventAttendance(
+      event,
+      attendee
+    );
 
     await this.validateAttendanceCancellation(event, eventAttendance);
 
@@ -48,7 +56,10 @@ export class EventAttendanceService {
     return await this.eventAttendanceRepository.findEventAttendees(event);
   }
 
-  private async validateAttendance(event: Event, attendee: User): Promise<void> {
+  private async validateAttendance(
+    event: Event,
+    attendee: User
+  ): Promise<void> {
     this.eventService.validateIfEventIsCancelled(event);
     this.eventService.validateIfEventIsDone(event);
     this.validateManagerSelfAttendance(event, attendee);
@@ -64,7 +75,9 @@ export class EventAttendanceService {
   private async validateAttendeeMaxQuantity(event: Event): Promise<void> {
     const currentAttendeeQuantity = await this.getAttendeesQuantity(event);
     if (currentAttendeeQuantity >= event.maxAttendees) {
-      throw new EventReachedMaxAttendeeQuantityException(currentAttendeeQuantity);
+      throw new EventReachedMaxAttendeeQuantityException(
+        currentAttendeeQuantity
+      );
     }
   }
 
@@ -72,13 +85,18 @@ export class EventAttendanceService {
     return await this.eventAttendanceRepository.getAttendeesQuantity(event);
   }
 
-  private async updateEventAttendance(eventAttendance: EventAttendance): Promise<void> {
+  private async updateEventAttendance(
+    eventAttendance: EventAttendance
+  ): Promise<void> {
     eventAttendance.confirmation = new Date();
     eventAttendance.cancellation = null;
     await this.eventAttendanceRepository.persist(eventAttendance);
   }
 
-  private async createEventAttendance(attendee: User, event: Event): Promise<void> {
+  private async createEventAttendance(
+    attendee: User,
+    event: Event
+  ): Promise<void> {
     const newAttendance = new EventAttendance();
     newAttendance.attendee = attendee;
     newAttendance.event = event;
@@ -87,7 +105,10 @@ export class EventAttendanceService {
     await this.eventAttendanceRepository.persist(newAttendance);
   }
 
-  private async validateAttendanceCancellation(event: Event, eventAttendance: EventAttendance): Promise<void> {
+  private async validateAttendanceCancellation(
+    event: Event,
+    eventAttendance: EventAttendance
+  ): Promise<void> {
     this.validateIfUserWasAnAttendee(eventAttendance);
     this.eventService.validateIfEventIsCancelled(event);
     this.eventService.validateIfEventIsDone(event);
@@ -102,5 +123,4 @@ export class EventAttendanceService {
   private isAlreadyAnAttendee(eventAttendance: EventAttendance) {
     return eventAttendance != null;
   }
-
 }

@@ -40,7 +40,8 @@ mockEventRequest.endDate = new Date(this.startDate + 3600);
 mockEventRequest.maxAttendees = 25;
 
 const mockUpdatedEvent = {
-  ...mockEvent, ...mockEventUpdateRequest,
+  ...mockEvent,
+  ...mockEventUpdateRequest,
 };
 
 const mockEventPaginationOptions = new EventPaginationOptions();

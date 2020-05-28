@@ -1,5 +1,5 @@
 export enum EventStatus {
   OPEN = 'OPEN',
   DONE = 'DONE',
-  CANCELED = 'CANCELED'
+  CANCELED = 'CANCELED',
 }
