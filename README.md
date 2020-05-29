@@ -70,10 +70,18 @@ You can verify more below!
 	- [ ] Admins and the Event owner can remove a User from a specific event
 	- [ ] Users should be able to create comments, edit and delete comments on Events
 		- [ ] Event owner and Admin and remove comments from any users
+	- [ ] A scheduled job should be created to update events and mark them as DONE after current date is bigger than event endDate field
 
 
 - [ ] **Notifications module**
     - [ ] Thinking about it 🤔
+
+##  Try it out :exclamation:
+
+I mapped all API calls using [Insomnia](https://insomnia.rest/download/core/?&ref=), so it is easier for testing flows while the front-end app is not completely ready.     
+To be easier for you, just import [this file](https://github.com/kammradt/lets-meet-api/blob/master/insomnia/Insomnia_api.json) or download it <a href="https://github.com/kammradt/lets-meet-api/blob/master/insomnia/Insomnia_api.json" download>here</a>
+ 
+
 
 
 ##  How to use :globe_with_meridians:
@@ -136,7 +144,7 @@ Recommended Node version: `v12.16.3`
 > Because as you can see, I have absolute no ideia what I'm doing :satisfied:
 
 ### How can I help?
-- You can [Fork](#) this project and modify what you want. And then, send modifications using the [Pull Request]() system.
+- You can [Fork](https://help.github.com/en/github/getting-started-with-github/fork-a-repo) this project and modify what you want. And then, send modifications using the [Pull Request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) system.
 
 ### What is and How to create a Fork?
 - A Fork is basically a copy of this repository, but in your account. So, you have access to all files and can do whatever you want with your version.
