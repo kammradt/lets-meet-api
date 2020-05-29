@@ -79,7 +79,7 @@ You can verify more below!
 ##  Try it out :exclamation:
 
 I mapped all API calls using [Insomnia](https://insomnia.rest/download/core/?&ref=), so it is easier for testing flows while the front-end app is not completely ready.     
-To be easier for you, just import [this file](https://github.com/kammradt/lets-meet-api/blob/master/insomnia/Insomnia_api.json) or download it <a href="https://github.com/kammradt/lets-meet-api/blob/master/insomnia/Insomnia_api.json" download>here</a>
+To be easier for you, just import [this file](https://github.com/kammradt/lets-meet-api/blob/master/insomnia/Insomnia_api.json) or download it <a id="raw-url" href="https://raw.githubusercontent.com/kammradt/lets-meet-api/blob/master/insomnia/Insomnia_api.json">here</a>
  
 
 
