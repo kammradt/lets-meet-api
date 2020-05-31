@@ -150,7 +150,7 @@ Recommended Node version: `v12.16.3`
 - A Fork is basically a copy of this repository, but in your account. So, you have access to all files and can do whatever you want with your version.
 Using github is really easy to create a Fork, just follow:
 > You just need to click on `Fork` button on the top right!
-![Fork instructins](https://i.imgur.com/zM6QQU2.gif)
+![Fork instructions](https://github.com/kammradt/lets-meet-api/blob/master/images/fork.gif)
 
 ### What is and How to create a Pull Request?
 - A Pull Request is a way of putting code from multiple people together in a organized way. After your modifications on your own forked repository, you can commit those changes and push to it.
@@ -162,7 +162,8 @@ How to put your version together with mine and have a better project? Really eas
 > 4. Click on `Create pull Request`
 > 5. It is a good ideia to write a description of what was added
 > 5. Create it! Thanks so much!
-![PR instructins](https://i.ibb.co/3rJ50TF/pr.gif)
+![PR instructions](https://github.com/kammradt/lets-meet-api/blob/master/images/pr.gif)
+
 
 
 ##  Author
