@@ -63,6 +63,9 @@ describe('EventRepository', () => {
             endDate: LessThanOrEqual(mockEventPaginationOptions.endDate),
             manager: mockUser,
           },
+          order: {
+            status: 'DESC',
+          },
         }
       );
       expect(result).toEqual(mockEventPaginationResult);

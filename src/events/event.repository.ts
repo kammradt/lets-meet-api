@@ -30,6 +30,9 @@ export class EventRepository extends Repository<Event> {
         endDate: LessThanOrEqual(options.endDate),
         manager: user,
       },
+      order: {
+        status: 'DESC',
+      },
     });
   }
 
@@ -46,6 +49,9 @@ export class EventRepository extends Repository<Event> {
         status: In([].concat(options.status)),
         startDate: MoreThanOrEqual(options.startDate),
         endDate: LessThanOrEqual(options.endDate),
+      },
+      order: {
+        status: 'DESC',
       },
     });
   }
