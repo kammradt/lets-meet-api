@@ -57,14 +57,9 @@ export class EventController {
     return this.eventService.findManagedEventsByUser(user, options);
   }
 
-  @UseGuards(AuthGuard(), RolesGuard)
-  @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
   @Get(':id')
-  findManagedEvent(
-    @Param('id', ParseUUIDPipe) id: string,
-    @GetUser() user: User
-  ): Promise<Event> {
-    return this.eventService.findManagedEventById(id, user);
+  findManagedEvent(@Param('id', ParseUUIDPipe) id: string): Promise<Event> {
+    return this.eventService.findById(id);
   }
 
   @UseGuards(AuthGuard(), RolesGuard)

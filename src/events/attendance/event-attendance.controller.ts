@@ -16,12 +16,12 @@ import { User } from '../../users/user.entity';
 import { UserRole } from '../../users/user-role.enum';
 import { AttendeeResponse } from './dtos/attendee-response';
 
-@UseGuards(AuthGuard(), RolesGuard)
-@RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
 @Controller('events')
 export class EventAttendanceController {
   constructor(private eventAttendanceService: EventAttendanceService) {}
 
+  @UseGuards(AuthGuard(), RolesGuard)
+  @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
   @Patch(':eventId/attendance')
   attendToEvent(
     @Param('eventId', ParseUUIDPipe) eventId: string,
@@ -30,6 +30,8 @@ export class EventAttendanceController {
     return this.eventAttendanceService.attendToEvent(eventId, user);
   }
 
+  @UseGuards(AuthGuard(), RolesGuard)
+  @RequiredRoles(UserRole.REGULAR, UserRole.PREMIUM)
   @Delete(':eventId/attendance')
   cancelAttendanceToEvent(
     @Param('eventId', ParseUUIDPipe) eventId: string,
